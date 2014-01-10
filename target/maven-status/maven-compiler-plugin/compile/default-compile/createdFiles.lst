@@ -1,0 +1,17 @@
+model/process/ProcessConnectivity.class
+model/common/StartServer.class
+model/common/DistributeRequest.class
+model/process/Process.class
+model/util/JSONUtilities.class
+model/process/ProcessConfiguration.class
+model/common/CustomProperties.class
+model/common/ModelConfiguration.class
+model/common/ShutdownHook.class
+model/net/ClientRestfulPost.class
+model/util/IOUtilities.class
+application/wsa/Main.class
+model/net/ClientRestful.class
+model/net/ModelSocket.class
+model/net/SocketCreator.class
+model/util/PropertyUtilities.class
+model/common/RequestDispatcher.class

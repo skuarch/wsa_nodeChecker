@@ -1,0 +1,6 @@
+model/util/PropertyUtilitiesTest.class
+model/common/ModelConfigurationTest.class
+model/common/PropertiesTest.class
+model/common/StartServerTest.class
+model/net/ModelSocketTest.class
+model/process/ProcessConfigurationTest.class
