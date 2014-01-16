@@ -9,7 +9,7 @@ import java.io.OutputStream;
 import java.util.Properties;
 
 /**
- * Utilities for Properties.
+ * Utilities for Properties file.
  *
  * @author skuarch
  */
@@ -26,7 +26,7 @@ public class PropertyUtilities {
     /**
      * return a Properties.
      *
-     * @return Properties
+     * @return Properties or null if the file doesn't exists.
      * @throws FileNotFoundException
      * @throws IOException
      */
@@ -84,12 +84,17 @@ public class PropertyUtilities {
 
     //==========================================================================
     /**
-     * write properties on file.
+     * write properties on file. this action will erase the contents of the file
+     * and will put the new content
      *
      * @param properties Properties to save
      * @throws IOException
      */
     public void storeProperties(Properties properties) throws IOException {
+
+        if (properties == null || properties.size() < 1) {
+            throw new NullPointerException("properties is null or empty");
+        }
 
         FileOutputStream fos = null;
 
@@ -105,6 +110,21 @@ public class PropertyUtilities {
         }
 
     } // end storeProperties
+
+    //==========================================================================
+    /**
+     * append a property in the file.
+     */
+    public void putPropertie(Object key, Object value) throws IOException {
+
+        Properties properties = null;
+
+        properties = getProperties();
+        properties.put(key, value);
+
+        storeProperties(properties);
+
+    } // end putPropertie
 
     //==========================================================================
     /**

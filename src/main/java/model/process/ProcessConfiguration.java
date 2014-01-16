@@ -21,7 +21,7 @@ public final class ProcessConfiguration extends Process {
     } // end ProcessConfiguration   
 
     //==========================================================================
-    public void responseGetConfiguration() {
+    public void getConfiguration() {
 
         HashMap<String, Object> configuration = null;
 
@@ -37,10 +37,10 @@ public final class ProcessConfiguration extends Process {
             ms.closeStreams();
         }
 
-    } // end responseGetConfiguration
+    } // end getConfiguration
 
     //==========================================================================
-    public void responseEditConfiguration() {
+    public void saveConfiguration() {
 
         Properties properties = null;
         Iterator iterator = null;
@@ -71,6 +71,6 @@ public final class ProcessConfiguration extends Process {
             ms.closeStreams();
         }
 
-    } // end responseEditConfiguration
+    } // end editConfiguration
 
 } // end class

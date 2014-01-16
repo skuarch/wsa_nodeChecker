@@ -1,15 +1,18 @@
 package model.common;
 
+import com.oracle.jrockit.jfr.ContentType;
 import model.process.ProcessConnectivity;
 import model.process.ProcessConfiguration;
 import java.io.IOException;
+import javassist.tools.reflect.Reflection;
 import model.net.ModelSocket;
+import model.process.ProcessNotifier;
 import model.util.JSONUtilities;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 /**
- * distribute the request
+ * distribute the request.
  *
  * @author skuarch
  */
@@ -59,27 +62,40 @@ public final class DistributeRequest {
 
             switch (request) {
 
+                //basic configuration ------------------------------------------
                 case "connectivity":
-                    new ProcessConnectivity(ms, jsono).responseConnectivity();
+                    new ProcessConnectivity(ms, jsono).connectivity();
                     break;
                 case "getConfiguration":
-                    new ProcessConfiguration(ms, jsono).responseGetConfiguration();
+                    new ProcessConfiguration(ms, jsono).getConfiguration();
                     break;
-                case "editConfiguration":
-                    new ProcessConfiguration(ms, jsono).responseEditConfiguration();
+                case "saveConfiguration":
+                    new ProcessConfiguration(ms, jsono).saveConfiguration();                    
                     break;
-                case "addServerNotifier":
+                case "addNotifier":
+                    new ProcessNotifier(ms, jsono).addNotifier();
                     break;
-                case "getServersNotifiers":
+                case "getNotifiers":
+                    new ProcessNotifier(ms, jsono).getNotifiers();
+                    break;
+                case "getNotifier":
+                    new ProcessNotifier(ms, jsono).getNotifier();
                     break;
                 case "deleteServerNotifier":
+                    new ProcessNotifier(ms, jsono).deleteNotifier();
                     break;
+                    
+                //--------------------------------------------------------------
+                case "createTask":
+                    // to do here
+                    break;    
+                    
                 default:
                     responseUnknownResquest();
                     break;
 
             }
-
+            
         } catch (Exception e) {
             logger.error("attendRequest", e);
         } finally {

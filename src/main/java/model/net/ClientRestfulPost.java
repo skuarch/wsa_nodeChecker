@@ -6,18 +6,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import javax.ws.rs.core.MediaType;
-import org.jboss.resteasy.client.ClientRequest;
-import org.jboss.resteasy.client.ClientResponse;
-import org.json.JSONObject;
+import org.jboss.resteasy.client.*;
 
 /**
  * Wrapper to RestEasy library.
  *
  * @author skuarch
  */
+@SuppressWarnings( "deprecation" )
 public final class ClientRestfulPost implements ClientRestful {
-
-    private ClientRequest clientRequest = null;
+    
+    private ClientRequest clientRequest = null;    
     private ClientResponse<String> clientResponse = null;
     private int status = 0;
     private boolean posted = false;
@@ -29,6 +28,7 @@ public final class ClientRestfulPost implements ClientRestful {
      *
      * @param url String
      */
+    @SuppressWarnings( "deprecation" )
     public ClientRestfulPost(String url) {
 
         clientRequest = new ClientRequest(url);

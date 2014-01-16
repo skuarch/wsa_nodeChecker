@@ -1,6 +1,10 @@
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/net/ModelSocketTest.java
+/home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/dao/DAOTest.java
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/util/PropertyUtilitiesTest.java
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/process/ProcessConfigurationTest.java
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/common/ModelConfigurationTest.java
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/common/PropertiesTest.java
+/home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/common/ModelNotifierTest.java
+/home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/net/ClientRestfulPostTest.java
+/home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/process/ProcessNotifierTest.java
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/common/StartServerTest.java

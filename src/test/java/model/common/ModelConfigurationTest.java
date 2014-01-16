@@ -2,6 +2,7 @@ package model.common;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Properties;
 import junit.framework.TestCase;
 
 /**
@@ -44,6 +45,32 @@ public class ModelConfigurationTest extends TestCase {
         System.out.println("getJSONConfiguration");
         
         System.out.println(ModelConfiguration.getJSONConfiguration());
+        
+    }
+
+    /**
+     * Test of getHashMapConfiguration method, of class ModelConfiguration.
+     */
+    public void testGetHashMapConfiguration() throws Exception {
+        System.out.println("getHashMapConfiguration");
+        HashMap<String, Object> expResult = null;
+        HashMap<String, Object> result = ModelConfiguration.getHashMapConfiguration();
+        //assertEquals(expResult, result);
+        
+    }
+
+    /**
+     * Test of saveConfiguration method, of class ModelConfiguration.
+     */
+    public void testSaveConfiguration() throws Exception {
+        System.out.println("saveConfiguration");
+        
+        //Properties properties = new Properties(); // is possible but is a bad used
+        Properties properties = new CustomProperties().getProperties();
+        
+        properties.setProperty("test", "delete");
+        
+        ModelConfiguration.saveConfiguration(properties);
         
     }
     

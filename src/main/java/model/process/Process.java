@@ -10,12 +10,12 @@ import org.json.JSONObject;
  *
  * @author skuarch
  */
-class Process {
+abstract class Process {
 
     static final Logger logger = Logger.getLogger(Process.class);
     ModelSocket ms = null;
-    JSONObject jsono = null;
-
+    JSONObject jsono = null;    
+    
     //==========================================================================
     Process(ModelSocket ms, JSONObject jsono) {
 
@@ -31,6 +31,10 @@ class Process {
         this.jsono = jsono;
         
     } // end Process
+    
+    
+    //==========================================================================
+    //public abstract String getStringDispatched();
 
     //==========================================================================
     final void sendError(String error) {

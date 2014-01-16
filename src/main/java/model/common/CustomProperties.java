@@ -9,12 +9,14 @@ import model.util.PropertyUtilities;
  */
 public class CustomProperties extends PropertyUtilities {
 
+    private static final String FILE_PROPERTIES = "configuration/configuration.properties";
+
     //==========================================================================
     /**
      * send to the super class the path of the file.
      */
     public CustomProperties() {
-        super("configuration/application.properties");
+        super(FILE_PROPERTIES);
     } // end CustomProperties
 
 } // end class

@@ -17,7 +17,7 @@ public final class ProcessConnectivity extends Process {
     } // end ProcessConnectivity
 
     //==========================================================================
-    public void responseConnectivity() {
+    public void connectivity() {
 
         JSONObject response = null;
 
@@ -34,6 +34,6 @@ public final class ProcessConnectivity extends Process {
             ms.closeStreams();
         }
 
-    } // end responseConnectivity
+    } // end connectivity
 
 } // end class

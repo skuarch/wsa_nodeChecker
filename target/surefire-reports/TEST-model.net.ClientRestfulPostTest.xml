@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.694" errors="0" skipped="0" tests="1" name="model.net.ClientRestfulPostTest">
+<testsuite failures="0" time="0.389" errors="1" skipped="0" tests="1" name="model.net.ClientRestfulPostTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/jdk1.7.0_45/jre/lib/amd64"/>
@@ -13,7 +13,6 @@
     <property name="user.country" value="US"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.os.patch.level" value="unknown"/>
-    <property name="test" value="model.net.ClientRestfulPostTest"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
     <property name="user.dir" value="/home/skuarch/NetBeansProjects/wsa_nodeChecker"/>
     <property name="java.runtime.version" value="1.7.0_45-b18"/>
@@ -27,7 +26,6 @@
     <property name="os.name" value="Linux"/>
     <property name="maven.ext.class.path" value="/home/skuarch/applications/netbeans-7.4/java/maven-nblib/netbeans-eventspy.jar"/>
     <property name="classworlds.conf" value="/home/skuarch/applications/netbeans-7.4/java/maven/bin/m2.conf"/>
-    <property name="netbeansProjectMappings" value=""/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
     <property name="java.library.path" value="/usr/lib/jvm/jdk1.7.0_45/jre/lib/amd64:/usr/lib/jvm/jdk1.7.0_45/jre/lib/i386::/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
@@ -37,14 +35,14 @@
     <property name="user.home" value="/home/skuarch"/>
     <property name="user.timezone" value="America/Mexico_City"/>
     <property name="java.awt.printerjob" value="sun.print.PSPrinterJob"/>
-    <property name="java.specification.version" value="1.7"/>
     <property name="file.encoding" value="UTF-8"/>
+    <property name="java.specification.version" value="1.7"/>
     <property name="user.name" value="skuarch"/>
     <property name="java.class.path" value="/home/skuarch/applications/netbeans-7.4/java/maven/boot/plexus-classworlds-2.4.jar"/>
     <property name="java.vm.specification.version" value="1.7"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="/usr/lib/jvm/jdk1.7.0_45/jre"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -Dtest=model.net.ClientRestfulPostTest -DnetbeansProjectMappings= -Dmaven.ext.class.path=/home/skuarch/applications/netbeans-7.4/java/maven-nblib/netbeans-eventspy.jar surefire:test"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -Dmaven.ext.class.path=/home/skuarch/applications/netbeans-7.4/java/maven-nblib/netbeans-eventspy.jar clean install"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="en"/>
     <property name="awt.toolkit" value="sun.awt.X11.XToolkit"/>
@@ -61,5 +59,44 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="0.68" classname="model.net.ClientRestfulPostTest" name="testSend"/>
+  <testcase time="0.388" classname="model.net.ClientRestfulPostTest" name="testSend">
+    <error message="Connection to http://192.168.208.9:8080 refused" type="org.apache.http.conn.HttpHostConnectException">org.apache.http.conn.HttpHostConnectException: Connection to http://192.168.208.9:8080 refused
+	at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:190)
+	at org.apache.http.impl.conn.ManagedClientConnectionImpl.open(ManagedClientConnectionImpl.java:294)
+	at org.apache.http.impl.client.DefaultRequestDirector.tryConnect(DefaultRequestDirector.java:640)
+	at org.apache.http.impl.client.DefaultRequestDirector.execute(DefaultRequestDirector.java:479)
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:906)
+	at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:805)
+	at org.jboss.resteasy.client.core.executors.ApacheHttpClient4Executor.execute(ApacheHttpClient4Executor.java:199)
+	at org.jboss.resteasy.core.interception.ClientExecutionContextImpl.proceed(ClientExecutionContextImpl.java:41)
+	at org.jboss.resteasy.plugins.interceptors.encoding.AcceptEncodingGZIPInterceptor.execute(AcceptEncodingGZIPInterceptor.java:40)
+	at org.jboss.resteasy.core.interception.ClientExecutionContextImpl.proceed(ClientExecutionContextImpl.java:47)
+	at org.jboss.resteasy.client.ClientRequest.execute(ClientRequest.java:441)
+	at org.jboss.resteasy.client.ClientRequest.httpMethod(ClientRequest.java:682)
+	at org.jboss.resteasy.client.ClientRequest.post(ClientRequest.java:566)
+	at org.jboss.resteasy.client.ClientRequest.post(ClientRequest.java:571)
+	at model.net.ClientRestfulPost.post(ClientRestfulPost.java:123)
+	at model.net.ClientRestfulPostTest.testSend(ClientRestfulPostTest.java:44)
+Caused by: java.net.ConnectException: Connection refused
+	at java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:579)
+	at org.apache.http.conn.scheme.PlainSocketFactory.connectSocket(PlainSocketFactory.java:127)
+	at org.apache.http.impl.conn.DefaultClientConnectionOperator.openConnection(DefaultClientConnectionOperator.java:180)
+	... 43 more
+</error>
+    <system-out>test restful client post
+18:44:04,051 DEBUG DocumentProvider:60 - Unable to retrieve config: expandEntityReferences defaults to true
+18:44:04,059 DEBUG DocumentProvider:60 - Unable to retrieve config: expandEntityReferences defaults to true
+18:44:04,324 DEBUG BasicClientConnectionManager:157 - Get connection for route {}-&gt;http://192.168.208.9:8080
+18:44:04,334 DEBUG DefaultClientConnectionOperator:177 - Connecting to 192.168.208.9:8080
+18:44:04,337 DEBUG DefaultClientConnection:169 - Connection org.apache.http.impl.conn.DefaultClientConnection@612a7ea1 closed
+18:44:04,338 DEBUG DefaultClientConnection:154 - Connection org.apache.http.impl.conn.DefaultClientConnection@612a7ea1 shut down
+18:44:04,338 DEBUG BasicClientConnectionManager:189 - Releasing connection org.apache.http.impl.conn.ManagedClientConnectionImpl@110f9f2f
+18:44:04,339 DEBUG BasicClientConnectionManager:219 - Connection can be kept alive for 9223372036854775807 MILLISECONDS
+</system-out>
+  </testcase>
 </testsuite>

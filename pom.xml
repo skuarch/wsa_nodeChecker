@@ -14,18 +14,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     
-    <build> 
-        
-        <!--<finalName>wsa_nodeChecker-production</finalName>-->
-           
-        <plugins>             
-            
+    <reporting>
+        <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>3.0.1</version>
             </plugin>
-            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
@@ -36,6 +31,32 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.9.1</version>
             </plugin>
+        </plugins>
+    </reporting>
+    
+    <build> 
+        
+        <!--<finalName>wsa_nodeChecker-production</finalName>-->
+         
+        <plugins> 
+            
+            <!--<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.0.1</version>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>2.3</version>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+            </plugin>-->
             
             <!-- copy dependencies to lib/ --> 
             <plugin>
@@ -114,7 +135,7 @@
                         <phase>compile</phase>
                         <configuration>
                             <target>
-                                <copy file="configuration/application.properties" tofile="target/configuration/application.properties"/>
+                                <copy file="configuration/configuration.properties" tofile="target/configuration/configuration.properties"/>
                                 <copy file="configuration/log4j.properties" tofile="target/configuration/log4j.properties"/>
                             </target>
                         </configuration>
@@ -129,6 +150,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
+                    <compilerArgument>-Xlint:unchecked</compilerArgument>
                     <showDeprecation>true</showDeprecation>
                     <source>1.7</source>
                     <target>1.7</target>
@@ -155,12 +177,35 @@
         <!-- / test--> 
         
         <!-- database -->
-        <dependency>
-            <groupId>org.apache.derby</groupId>
-            <artifactId>derby</artifactId>
-            <version>10.10.1.1</version>
-        </dependency>            
+        <!--<dependency>
+        <groupId>org.apache.derby</groupId>
+        <artifactId>derby</artifactId>
+        <version>10.10.1.1</version>
+    </dependency>      
+    <dependency>
+        <groupId>org.apache.derby</groupId>
+        <artifactId>derbyclient</artifactId>
+        <version>10.10.1.1</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.derby</groupId>
+        <artifactId>derbynet</artifactId>
+        <version>10.10.1.1</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.derby</groupId>
+        <artifactId>derbytools</artifactId>
+        <version>10.10.1.1</version>
+    </dependency>      
+        -->
             
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.7.15-M1</version>
+        </dependency>
+            
+                
         <!-- hibernate -->        
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -261,5 +306,7 @@
         <!-- / common libraries -->     
     
     </dependencies>
+    
+    
     
 </project>

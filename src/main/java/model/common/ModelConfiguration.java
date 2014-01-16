@@ -72,7 +72,7 @@ public final class ModelConfiguration {
 
     //==========================================================================
     /**
-     * Write the configuration in a file.
+     * Delete the file and create a new one.
      *
      * @param properties Properties
      * @throws IOException
