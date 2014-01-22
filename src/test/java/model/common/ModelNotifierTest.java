@@ -32,8 +32,7 @@ public class ModelNotifierTest extends TestCase {
         
         Notifier n = new Notifier();
         n.setName("testdelete");
-        n.setPort(8080);
-        n.setHost("test");
+        n.setUrl("http://192.168.208.9:8080/sam5/notifications");        
         
         System.out.println(ModelNotifier.addNotifier(n));
         ModelNotifier.removeNotifier(n);
@@ -46,8 +45,7 @@ public class ModelNotifierTest extends TestCase {
     public void testRemoveNotifier() {
         Notifier n = new Notifier();
         n.setName("testdelete");
-        n.setPort(8080);
-        n.setHost("test");
+        n.setUrl("http://192.168.208.9:8080/sam5/notifications");        
         
         System.out.println(ModelNotifier.addNotifier(n));
         ModelNotifier.removeNotifier(n);
@@ -59,12 +57,11 @@ public class ModelNotifierTest extends TestCase {
     public void testUpdateNotifier() {
         Notifier n = new Notifier();
         n.setName("testdelete");
-        n.setPort(8080);
-        n.setHost("test");
+        n.setUrl("http://192.168.208.9:8080/sam5/notifications");        
         
         System.out.println(ModelNotifier.addNotifier(n));
         
-        n.setHost("chales");
+        n.setUrl("http://192.168.208.9:8080/sam5/notifications");        
         
         ModelNotifier.updateNotifier(n);
         
@@ -79,8 +76,7 @@ public class ModelNotifierTest extends TestCase {
         
         Notifier n = new Notifier();
         n.setName("testdelete");
-        n.setPort(8080);
-        n.setHost("test");
+        n.setUrl("http://192.168.208.9:8080/sam5/notifications");        
         
         System.out.println(ModelNotifier.getNotifiers());
         ModelNotifier.removeNotifier(n);
@@ -95,8 +91,7 @@ public class ModelNotifierTest extends TestCase {
         
         Notifier n = new Notifier();
         n.setName("testdelete");
-        n.setPort(8080);
-        n.setHost("test");
+        n.setUrl("http://192.168.208.9:8080/sam5/notifications");        
         
         DAO.create(n);
         

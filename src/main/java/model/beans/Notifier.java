@@ -19,7 +19,8 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "notifiers", query = "from Notifier"),
     @NamedQuery(name = "getNotifierByName", query = "from Notifier n where n.name = :name")
-})public class Notifier implements Serializable {
+})
+public class Notifier implements Serializable {
 
     @Id
     @Column(name = "notifier_id")
@@ -29,11 +30,8 @@ import javax.persistence.Table;
     @Column(name = "notifier_name", nullable = false)
     private String name;
 
-    @Column(name = "notifier_host", nullable = false)
-    private String host;
-
-    @Column(name = "notifier_port", nullable = false)
-    private int port;
+    @Column(name = "notifier_url", nullable = false)
+    private String url;
 
     public long getId() {
         return id;
@@ -51,25 +49,17 @@ import javax.persistence.Table;
         this.name = name;
     }
 
-    public String getHost() {
-        return host;
+    public String getUrl() {
+        return url;
     }
 
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override
-    public String toString() {        
-        return "name= " + name + " id=" + id + " host=" + host + " port=" + port;        
+    public String toString() {
+        return "name= " + name + " id=" + id + " url=" + url;
     }
 
 } // end class

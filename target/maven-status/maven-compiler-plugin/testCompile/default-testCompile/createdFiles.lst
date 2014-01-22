@@ -3,6 +3,7 @@ model/common/ModelNotifierTest.class
 model/net/ModelSocketTest.class
 model/process/ProcessConfigurationTest.class
 model/util/PropertyUtilitiesTest.class
+model/common/ModelSchedulerTest.class
 model/process/ProcessNotifierTest.class
 model/common/PropertiesTest.class
 model/net/ClientRestfulPostTest.class

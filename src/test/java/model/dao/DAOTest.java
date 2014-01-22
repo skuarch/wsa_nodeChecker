@@ -34,17 +34,15 @@ public class DAOTest extends TestCase {
 
         Notifier notifier = new Notifier();
         notifier.setName("testdelete");
-        notifier.setHost("test");
-        notifier.setPort(8080);
+        notifier.setUrl("http://192.168.208.9:8080/sam5/notifications");
         notifier.setId(1);
 
         long expResult = 1;
         long result = DAO.create(notifier);
 
         System.out.println(result);
-        
-        //assertEquals(expResult, result);
 
+        //assertEquals(expResult, result);
         DAO.delete(notifier);
 
     }
@@ -57,8 +55,7 @@ public class DAOTest extends TestCase {
         System.out.println("delete");
         Notifier notifier = new Notifier();
         notifier.setName("testdelete");
-        notifier.setHost("test");
-        notifier.setPort(8080);
+        notifier.setUrl("http://192.168.208.9:8080/sam5/notifications");
         notifier.setId(1);
 
         DAO.create(notifier);
@@ -77,8 +74,7 @@ public class DAOTest extends TestCase {
         Notifier notifier = new Notifier();
         notifier.setName("testdelete");
         notifier.setId(1);
-        notifier.setPort(8080);
-        notifier.setHost("something");
+        notifier.setUrl("http://192.168.208.9:8080/sam5/notifications");
 
         DAO.create(notifier);
 
@@ -97,8 +93,7 @@ public class DAOTest extends TestCase {
         Notifier notifier = new Notifier();
         notifier.setName("testdelete");
         notifier.setId(1);
-        notifier.setPort(8080);
-        notifier.setHost("something");
+        notifier.setUrl("http://192.168.208.9:8080/sam5/notifications");
 
         DAO.create(notifier);
 
@@ -142,8 +137,6 @@ public class DAOTest extends TestCase {
      */
     public void testQuery_3args() {
 
-        
-        
     }
 
     /**
@@ -163,12 +156,11 @@ public class DAOTest extends TestCase {
         Notifier notifier = new Notifier();
         notifier.setName("testdelete");
         notifier.setId(1);
-        notifier.setPort(8080);
-        notifier.setHost("something");
-        
+        notifier.setUrl("http://192.168.208.9:8080/sam5/notifications");
+
         DAO.create(notifier);
         notifier.setName("testdelete");
-        notifier.setPort(5000);
+        notifier.setUrl("http://192.168.208.9:8080/sam5/notifications");
         DAO.update(notifier);
         DAO.delete(notifier);
     }

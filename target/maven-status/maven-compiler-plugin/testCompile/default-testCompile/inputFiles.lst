@@ -4,6 +4,7 @@
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/process/ProcessConfigurationTest.java
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/common/ModelConfigurationTest.java
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/common/PropertiesTest.java
+/home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/common/ModelSchedulerTest.java
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/common/ModelNotifierTest.java
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/net/ClientRestfulPostTest.java
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/process/ProcessNotifierTest.java

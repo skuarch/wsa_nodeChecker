@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.01" errors="1" skipped="0" tests="2" name="model.process.ProcessNotifierTest">
+<testsuite failures="0" time="0.001" errors="0" skipped="0" tests="2" name="model.process.ProcessNotifierTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/jdk1.7.0_45/jre/lib/amd64"/>
@@ -60,20 +60,5 @@
     <property name="sun.cpu.isalist" value=""/>
   </properties>
   <testcase time="0" classname="model.process.ProcessNotifierTest" name="testAddNotifier"/>
-  <testcase time="0.009" classname="model.process.ProcessNotifierTest" name="testGetNotifiers">
-    <error message="Connection refused" type="java.net.ConnectException">java.net.ConnectException: Connection refused
-	at java.net.PlainSocketImpl.socketConnect(Native Method)
-	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339)
-	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200)
-	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182)
-	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
-	at java.net.Socket.connect(Socket.java:579)
-	at java.net.Socket.connect(Socket.java:528)
-	at java.net.Socket.&lt;init&gt;(Socket.java:425)
-	at java.net.Socket.&lt;init&gt;(Socket.java:208)
-	at model.process.ProcessNotifierTest.testGetNotifiers(ProcessNotifierTest.java:47)
-</error>
-    <system-out>getNotifiers
-</system-out>
-  </testcase>
+  <testcase time="0" classname="model.process.ProcessNotifierTest" name="testGetNotifiers"/>
 </testsuite>

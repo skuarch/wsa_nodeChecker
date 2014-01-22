@@ -44,20 +44,18 @@ public class ProcessNotifierTest extends TestCase {
     public void testGetNotifiers() throws IOException {
         System.out.println("getNotifiers");
         
-        ModelSocket ms = new ModelSocket(new Socket("192.168.208.9", 8080));
+        /*ModelSocket ms = new ModelSocket(new Socket("192.168.208.9", 8080));
         JSONObject jsono = new JSONObject();
         jsono.accumulate("request", "getNotifiers");
         
         Notifier n = new Notifier();
         n.setName("1");
-        n.setPort(1);
-        n.setHost("1");
+        n.setUrl("http://192.168.208.9:8080/sam5/notifications");        
         
         DAO.create(n);
         
         n.setName("2");
-        n.setPort(2);
-        n.setHost("2");
+        n.setUrl("http://192.168.208.9:8080/sam5/notifications"); 
         
         DAO.create(n);
         
@@ -70,7 +68,7 @@ public class ProcessNotifierTest extends TestCase {
         
         JSONObject object = new JSONObject(j);
         System.out.println("madres "  + object.getJSONArray("notifiers").get(0));
-        
+        */
     }
     
 }

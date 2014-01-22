@@ -22,7 +22,7 @@ public class ProcessNotifier extends Process {
     //==========================================================================
     public void addNotifier() {
 
-        if (!jsono.has("name") || !jsono.has("host") || !jsono.has("port")) {
+        if (!jsono.has("name") || !jsono.has("url")) {
             throw new IllegalArgumentException("json is incorrect");
         }
 
@@ -32,8 +32,7 @@ public class ProcessNotifier extends Process {
 
             notifier = new Notifier();
             notifier.setName(jsono.getString("name"));
-            notifier.setHost(jsono.getString("host"));
-            notifier.setPort(jsono.getInt("port"));
+            notifier.setUrl(jsono.getString("url"));            
 
             ModelNotifier.addNotifier(notifier);
             ms.send("{\"added\":\"true\"}");
@@ -113,8 +112,7 @@ public class ProcessNotifier extends Process {
             jsonRsponse = new JSONObject();
             jsonRsponse.put("is", notifier.getId());
             jsonRsponse.put("name", notifier.getName());
-            jsonRsponse.put("host", notifier.getHost());
-            jsonRsponse.put("port", notifier.getPort());
+            jsonRsponse.put("url", notifier.getUrl());            
 
             ms.send(jsonRsponse.toString());
 

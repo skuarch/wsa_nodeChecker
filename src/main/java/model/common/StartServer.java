@@ -1,7 +1,9 @@
 package model.common;
 
 import java.io.IOException;
-import model.net.SocketCreator;
+import java.net.ServerSocket;
+import java.net.Socket;
+import org.apache.log4j.Logger;
 
 /**
  * Read some properties in order to start the server.
@@ -9,6 +11,8 @@ import model.net.SocketCreator;
  * @author skuarch
  */
 public final class StartServer {
+
+    private static final Logger logger = Logger.getLogger(StartServer.class);
 
     //==========================================================================
     /**
@@ -26,21 +30,36 @@ public final class StartServer {
      */
     public void run() throws IOException {
 
-        CustomProperties properties = new CustomProperties();
+        ServerSocket serverSocket = null;
+        Socket socket = null; //client
+        int timeout = 0;
+        CustomProperties customProperties = new CustomProperties();
         int port;
-        
+
         try {
 
             //retrieving data from application.properties               
-            port = properties.getIntPropertie("listen.port");
+            port = customProperties.getIntPropertie("listen.port");
 
-            // ok, let's go to listen a port
-            new SocketCreator().startServer(port);
+            timeout = customProperties.getIntPropertie("socket.timeout");
+            serverSocket = new ServerSocket(port);
+            logger.info("listening on port " + port);
+
+            //here create a socket to each request
+            while (true) {
+
+                socket = serverSocket.accept();
+                socket.setSoTimeout(timeout);
+                socket.setKeepAlive(false);
+
+                //dispatch each client in another thread in order to continue listening
+                new Thread(new RequestDispatcher(socket)).start();
+            }
 
         } catch (IOException e) {
             throw e;
         } finally {
-            properties = null;
+            customProperties = null;
         }
 
     } // end run
