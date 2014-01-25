@@ -30,6 +30,7 @@ public class DAOTest extends TestCase {
      */
     public void testCreate() {
 
+        System.out.println("------------------------------------------------------------------------");
         System.out.println("create");
 
         Notifier notifier = new Notifier();
@@ -38,12 +39,12 @@ public class DAOTest extends TestCase {
         notifier.setId(1);
 
         long expResult = 1;
-        long result = DAO.create(notifier);
+        long result = new DAO().create(notifier);
 
         System.out.println(result);
 
         //assertEquals(expResult, result);
-        DAO.delete(notifier);
+        new DAO().delete(notifier);
 
     }
 
@@ -52,15 +53,17 @@ public class DAOTest extends TestCase {
      */
     public void testDelete() {
 
+        System.out.println("------------------------------------------------------------------------");
         System.out.println("delete");
+        
         Notifier notifier = new Notifier();
         notifier.setName("testdelete");
         notifier.setUrl("http://192.168.208.9:8080/sam5/notifications");
         notifier.setId(1);
 
-        DAO.create(notifier);
+        new DAO().create(notifier);
 
-        DAO.delete(notifier);
+        new DAO().delete(notifier);
 
     }
 
@@ -69,6 +72,7 @@ public class DAOTest extends TestCase {
      */
     public void testGet() {
 
+        System.out.println("------------------------------------------------------------------------");
         System.out.println("get");
 
         Notifier notifier = new Notifier();
@@ -76,11 +80,11 @@ public class DAOTest extends TestCase {
         notifier.setId(1);
         notifier.setUrl("http://192.168.208.9:8080/sam5/notifications");
 
-        DAO.create(notifier);
+        new DAO().create(notifier);
 
-        System.out.println(DAO.get(1, new Notifier()));
+        System.out.println(new DAO().get(1, new Notifier()));
 
-        DAO.delete(notifier);
+        new DAO().delete(notifier);
 
     }
 
@@ -89,20 +93,21 @@ public class DAOTest extends TestCase {
      */
     public void testGetList() {
 
+        System.out.println("------------------------------------------------------------------------");
         System.out.println("getList");
         Notifier notifier = new Notifier();
         notifier.setName("testdelete");
         notifier.setId(1);
         notifier.setUrl("http://192.168.208.9:8080/sam5/notifications");
 
-        DAO.create(notifier);
+        new DAO().create(notifier);
 
-        List<Notifier> list = DAO.getList(new Notifier());
+        List<Notifier> list = new DAO().getList(new Notifier());
         ArrayList<Notifier> arrayList = new ArrayList<>(list);
 
         System.out.println(arrayList);
 
-        DAO.delete(notifier);
+        new DAO().delete(notifier);
     }
 
     /**
@@ -110,8 +115,10 @@ public class DAOTest extends TestCase {
      */
     public void testHql_String_GenericType() {
 
+        System.out.println("------------------------------------------------------------------------");
         System.out.println("hql");
-        System.out.println(DAO.hql("from Notifier", new Notifier()));
+        
+        System.out.println(new DAO().hql("from Notifier", new Notifier()));
 
     }
 
@@ -119,17 +126,22 @@ public class DAOTest extends TestCase {
      * Test of hql method, of class DAO.
      */
     public void testHql_3args() {
+        
+        System.out.println("------------------------------------------------------------------------");
         System.out.println("hql");
 
-        System.out.println(DAO.hql("from Notifier", new Notifier(), 10));
+        System.out.println(new DAO().hql("from Notifier", new Notifier(), 10));
     }
 
     /**
      * Test of query method, of class DAO.
      */
     public void testQuery_String_GenericType() {
+        
+        System.out.println("------------------------------------------------------------------------");        
         System.out.println("query");
-        System.out.println(DAO.query("notifiers", new Notifier()));
+        
+        System.out.println(new DAO().query("notifiers", new Notifier()));
     }
 
     /**
@@ -151,6 +163,8 @@ public class DAOTest extends TestCase {
      * Test of update method, of class DAO.
      */
     public void testUpdate() {
+        
+        System.out.println("------------------------------------------------------------------------");
         System.out.println("update");
 
         Notifier notifier = new Notifier();
@@ -158,11 +172,11 @@ public class DAOTest extends TestCase {
         notifier.setId(1);
         notifier.setUrl("http://192.168.208.9:8080/sam5/notifications");
 
-        DAO.create(notifier);
+        new DAO().create(notifier);
         notifier.setName("testdelete");
         notifier.setUrl("http://192.168.208.9:8080/sam5/notifications");
-        DAO.update(notifier);
-        DAO.delete(notifier);
+        new DAO().update(notifier);
+        new DAO().delete(notifier);
     }
 
 }

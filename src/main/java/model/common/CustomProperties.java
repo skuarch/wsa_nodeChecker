@@ -7,7 +7,7 @@ import model.util.PropertyUtilities;
  *
  * @author skuarch
  */
-public class CustomProperties extends PropertyUtilities {
+public final class CustomProperties extends PropertyUtilities {
 
     private static final String FILE_PROPERTIES = "configuration/configuration.properties";
 

@@ -42,6 +42,8 @@ public class ProcessNotifierTest extends TestCase {
      * Test of getNotifiers method, of class ProcessNotifier.
      */
     public void testGetNotifiers() throws IOException {
+        
+        System.out.println("------------------------------------------------------------------------");
         System.out.println("getNotifiers");
         
         /*ModelSocket ms = new ModelSocket(new Socket("192.168.208.9", 8080));

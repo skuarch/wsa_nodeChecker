@@ -3,13 +3,11 @@ package model.dao;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import model.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
+import org.hibernate.Transaction;
 
 /**
  * Data Access Object generic.
@@ -18,47 +16,24 @@ import org.hibernate.service.ServiceRegistryBuilder;
  */
 public final class DAO {
 
-    private static Configuration configuration = null;
-    private static SessionFactory sessionFactory = null;
-    private static ServiceRegistry serviceRegistry = null;
     private static Session session = null;
-
-    //==========================================================================
-    /**
-     * setup all the variables.
-     */
-    static {
-
-        try {
-
-            configuration = new Configuration();
-            configuration.configure();
-            serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();
-            sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-
-        } catch (HibernateException e) {
-            closeSession();
-            throw e;
-        }
-
-    } // end static
+    private Transaction transaction = null;
 
     //==========================================================================
     /**
      * this class doesn't require a constructor.
      */
-    private DAO() {
+    public DAO() {
+        openSession();
     } // end DAO;
 
     //==========================================================================
     /**
      * open a session with hibernate.
      */
-    private static void openSession() {
+    private void openSession() {
 
-        if (session == null || !session.isOpen()) {
-            session = sessionFactory.openSession();
-        }
+        session = HibernateUtil.getSessionFactory().openSession();
 
     } // end openSession
 
@@ -71,7 +46,7 @@ public final class DAO {
      * @throws HibernateException
      */
     @SuppressWarnings("unchecked")
-    public static long create(final Object object) throws HibernateException {
+    public long create(final Object object) throws HibernateException {
 
         if (object == null) {
             throw new IllegalArgumentException("the parameter object is null");
@@ -81,9 +56,9 @@ public final class DAO {
 
         try {
 
-            openSession();
+            transaction = session.beginTransaction();
             id = (long) session.save(object);
-            session.beginTransaction().commit();
+            transaction.commit();
 
         } catch (HibernateException he) {
             throw he;
@@ -101,7 +76,7 @@ public final class DAO {
      * @param object Object
      * @throws HibernateException
      */
-    public static void delete(final Object object) throws HibernateException {
+    public void delete(final Object object) throws HibernateException {
 
         if (object == null) {
             throw new IllegalArgumentException("the parameter object is null");
@@ -109,9 +84,9 @@ public final class DAO {
 
         try {
 
-            openSession();
+            transaction = session.beginTransaction();
             session.delete(object);
-            session.beginTransaction().commit();
+            transaction.commit();
 
         } catch (HibernateException he) {
             throw he;
@@ -123,7 +98,7 @@ public final class DAO {
 
     //==========================================================================
     @SuppressWarnings("unchecked")
-    public static <T> T get(final long id, final T type) {
+    public <T> T get(final long id, final T type) {
 
         if (type == null) {
             throw new IllegalArgumentException("the parameter type is null");
@@ -137,9 +112,9 @@ public final class DAO {
 
         try {
 
-            openSession();
+            transaction = session.beginTransaction();
             t = (T) session.get(type.getClass(), id);
-            session.beginTransaction().commit();
+            transaction.commit();
 
         } catch (HibernateException he) {
             throw he;
@@ -153,7 +128,7 @@ public final class DAO {
 
     //==========================================================================
     @SuppressWarnings("unchecked")
-    public static <T> List<T> getList(final T type) throws HibernateException {
+    public <T> List<T> getList(final T type) throws HibernateException {
 
         if (type == null) {
             throw new IllegalArgumentException("the parameter type is null");
@@ -163,9 +138,9 @@ public final class DAO {
 
         try {
 
-            openSession();
+            transaction = session.beginTransaction();
             list = session.createQuery("from " + type.getClass().getCanonicalName()).list();
-            session.beginTransaction().commit();
+            transaction.commit();
 
         } catch (HibernateException he) {
             throw he;
@@ -179,7 +154,7 @@ public final class DAO {
 
     //==========================================================================
     @SuppressWarnings("unchecked")
-    public static <T> List<T> hql(final String hql,final T type) {
+    public <T> List<T> hql(final String hql, final T type) {
 
         if (hql == null || hql.length() < 1) {
             throw new IllegalArgumentException("the parameter hql is null");
@@ -194,14 +169,13 @@ public final class DAO {
 
         try {
 
-            openSession();
             query = session.createQuery(hql);
             query.setProperties(type);
-            list = query.list();            
+            list = query.list();
 
         } catch (HibernateException e) {
             throw e;
-        }finally{
+        } finally {
             closeSession();
         }
 
@@ -211,7 +185,7 @@ public final class DAO {
 
     //==========================================================================
     @SuppressWarnings("unchecked")
-    public static <T> List<T> hql(final String hql,final T type, int maxResults) {
+    public <T> List<T> hql(final String hql, final T type, int maxResults) {
 
         if (hql == null || hql.length() < 1) {
             throw new IllegalArgumentException("the parameter hql is null");
@@ -230,7 +204,6 @@ public final class DAO {
 
         try {
 
-            openSession();
             query = session.createQuery(hql);
             query.setMaxResults(maxResults);
             query.setProperties(type);
@@ -238,7 +211,7 @@ public final class DAO {
 
         } catch (HibernateException e) {
             throw e;
-        }finally{
+        } finally {
             closeSession();
         }
 
@@ -248,7 +221,7 @@ public final class DAO {
 
     //==========================================================================
     @SuppressWarnings("unchecked")
-    public static <T> List<T> query(final String queryName,final T type) throws HibernateException {
+    public <T> List<T> query(final String queryName, final T type) throws HibernateException {
 
         if (queryName == null || queryName.length() < 1) {
             throw new NullPointerException("queryName is null or empty");
@@ -263,7 +236,6 @@ public final class DAO {
 
         try {
 
-            openSession();
             query = session.getNamedQuery(queryName);
             query.setProperties(type);
             list = query.list();
@@ -280,7 +252,7 @@ public final class DAO {
 
     //==========================================================================
     @SuppressWarnings("unchecked")
-    public static <T> List<T> query(final String queryName,final HashMap<String, String> parameters,final T type) throws HibernateException {
+    public <T> List<T> query(final String queryName, final HashMap<String, String> parameters, final T type) throws HibernateException {
 
         if (queryName == null || queryName.length() < 1) {
             throw new NullPointerException("queryName is null or empty");
@@ -301,7 +273,6 @@ public final class DAO {
 
         try {
 
-            openSession();
             query = session.getNamedQuery(queryName);
             query.setProperties(type);
 
@@ -325,7 +296,7 @@ public final class DAO {
 
     //==========================================================================
     @SuppressWarnings("unchecked")
-    public static <T> List<T> query(final String queryName,final HashMap<String, String> parameters,final T type,final int maxResults) throws HibernateException {
+    public <T> List<T> query(final String queryName, final HashMap<String, String> parameters, final T type, final int maxResults) throws HibernateException {
 
         if (queryName == null || queryName.length() < 1) {
             throw new NullPointerException("queryName is null or empty");
@@ -350,7 +321,6 @@ public final class DAO {
 
         try {
 
-            openSession();
             query = session.getNamedQuery(queryName);
             query.setProperties(type);
             query.setMaxResults(maxResults);
@@ -380,7 +350,7 @@ public final class DAO {
      * @param object Object
      * @throws HibernateException
      */
-    public static void update(final Object object) throws HibernateException {
+    public void update(final Object object) throws HibernateException {
 
         if (object == null) {
             throw new IllegalArgumentException("the parameter object is null");
@@ -388,9 +358,9 @@ public final class DAO {
 
         try {
 
-            openSession();
+            transaction = session.beginTransaction();
             session.update(object);
-            session.beginTransaction().commit();
+            transaction.commit();
 
         } catch (HibernateException he) {
             throw he;
@@ -410,7 +380,9 @@ public final class DAO {
 
             if (session.isOpen()) {
                 session.close();
+                //session.disconnect();
             }
+
         }
 
     } // end closeSession

@@ -56,7 +56,10 @@ public class PropertyUtilitiesTest extends TestCase {
      * Test of storeProperties method, of class PropertyUtilities.
      */
     public void testStoreProperties() throws Exception {
+        
+        System.out.println("------------------------------------------------------------------------");
         System.out.println("storeProperties");
+        
         PropertyUtilities instance = new PropertyUtilities("configuration/configuration.properties");
         
         Properties properties = instance.getProperties();

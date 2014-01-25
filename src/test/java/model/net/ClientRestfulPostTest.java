@@ -30,6 +30,7 @@ public class ClientRestfulPostTest extends TestCase {
      */
     public void testSend() throws Exception {
 
+        System.out.println("------------------------------------------------------------------------");
         System.out.println("test restful client post");
 
         JSONObject json = new JSONObject();

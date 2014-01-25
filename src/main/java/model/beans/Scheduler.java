@@ -33,13 +33,21 @@ public class Scheduler implements Serializable {
     private String name;
     @Column(name = "scheduler_period")
     private int period;
-    @Column(name = "scheduler_running")
-    private boolean running;    
-    @OneToMany(mappedBy = "scheduler",cascade = CascadeType.ALL)    
+    @Column(name = "scheduler_status")
+    private boolean status;
+    @OneToMany(mappedBy = "scheduler", cascade = CascadeType.ALL)
     private Set<NetworkNode> nodes;
 
+    //==========================================================================
     public Scheduler() {
     }
+
+    //==========================================================================
+    public Scheduler(String name, int period, boolean status) {
+        this.name = name;
+        this.period = period;
+        this.status = status;        
+    } // end Scheduler
 
     public long getId() {
         return id;
@@ -65,12 +73,12 @@ public class Scheduler implements Serializable {
         this.period = period;
     }
 
-    public boolean isRunning() {
-        return running;
+    public boolean isStatus() {
+        return status;
     }
 
-    public void setRunning(boolean running) {
-        this.running = running;
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public Set<NetworkNode> getNodes() {

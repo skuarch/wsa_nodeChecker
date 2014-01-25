@@ -28,6 +28,8 @@ public class ModelNotifierTest extends TestCase {
      * Test of addNotifier method, of class ModelNotifier.
      */
     public void testAddNotifier() {
+        
+        System.out.println("------------------------------------------------------------------------");
         System.out.println("addNotifier");
         
         Notifier n = new Notifier();
@@ -43,6 +45,10 @@ public class ModelNotifierTest extends TestCase {
      * Test of removeNotifier method, of class ModelNotifier.
      */
     public void testRemoveNotifier() {
+        
+        System.out.println("------------------------------------------------------------------------");
+        System.out.println("testRemoveNotifier");
+        
         Notifier n = new Notifier();
         n.setName("testdelete");
         n.setUrl("http://192.168.208.9:8080/sam5/notifications");        
@@ -55,6 +61,10 @@ public class ModelNotifierTest extends TestCase {
      * Test of updateNotifier method, of class ModelNotifier.
      */
     public void testUpdateNotifier() {
+        
+        System.out.println("------------------------------------------------------------------------");
+        System.out.println("testUpdateNotifier");
+        
         Notifier n = new Notifier();
         n.setName("testdelete");
         n.setUrl("http://192.168.208.9:8080/sam5/notifications");        
@@ -72,6 +82,8 @@ public class ModelNotifierTest extends TestCase {
      * Test of getNotifiers method, of class ModelNotifier.
      */
     public void testGetNotifiers() {
+        
+        System.out.println("------------------------------------------------------------------------");
         System.out.println("getNotifiers");
         
         Notifier n = new Notifier();
@@ -87,17 +99,19 @@ public class ModelNotifierTest extends TestCase {
      * Test of getNotifiers method, of class ModelNotifier.
      */
     public void testGetNotifier() {
+        
+        System.out.println("------------------------------------------------------------------------");
         System.out.println("getNotifier");
         
         Notifier n = new Notifier();
         n.setName("testdelete");
         n.setUrl("http://192.168.208.9:8080/sam5/notifications");        
         
-        DAO.create(n);
+        new DAO().create(n);
         
         System.out.println(ModelNotifier.getNotifier("testdelete"));
         
-        DAO.delete(n);
+        new DAO().delete(n);
         
     }
     

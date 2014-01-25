@@ -13,7 +13,7 @@ import model.dao.DAO;
 public final class ModelNotifier {
 
     //==========================================================================
-    private ModelNotifier() {
+    private ModelNotifier() {        
     } // end ModelNotifier
 
     //==========================================================================
@@ -29,7 +29,7 @@ public final class ModelNotifier {
             throw new NullPointerException("notifier is null");
         }
 
-        long id = DAO.create(notifier);
+        long id = new DAO().create(notifier);
 
         return id;
 
@@ -42,10 +42,10 @@ public final class ModelNotifier {
             throw new NullPointerException("name is null or empty");
         }
 
-        HashMap<String,String> parameter = new HashMap<>();
+        HashMap<String, String> parameter = new HashMap<>();
         parameter.put("name", name);
         Notifier notifier = null;
-        List<Notifier> list = DAO.query("getNotifierByName", parameter, new Notifier());
+        List<Notifier> list = new DAO().query("getNotifierByName", parameter, new Notifier());
 
         if (list == null || list.size() < 1) {
             return null;
@@ -69,7 +69,7 @@ public final class ModelNotifier {
             throw new NullPointerException("notifier is null");
         }
 
-        DAO.delete(notifier);
+        new DAO().delete(notifier);
 
     } // end 
 
@@ -80,17 +80,31 @@ public final class ModelNotifier {
             throw new NullPointerException("notifier is null");
         }
 
-        DAO.update(notifier);
-        
+        new DAO().update(notifier);
+
     } // end updateNotifier
 
     //==========================================================================
     public static ArrayList<Notifier> getNotifiers() {
 
         ArrayList<Notifier> notifiers = null;
-        notifiers = new ArrayList<>(DAO.getList(new Notifier()));
+        notifiers = new ArrayList<>(new DAO().getList(new Notifier()));
         return notifiers;
 
-    } // end getNotifiers    
+    } // end getNotifiers  
+
+    //==========================================================================
+    public static boolean existsNotifier(String name) {
+
+        boolean flag = false;
+
+        if (getNotifier(name) == null) {
+            flag = false;
+        } else {
+            flag = true;
+        }
+
+        return flag;
+    } // end existsNotifier
 
 } // end class

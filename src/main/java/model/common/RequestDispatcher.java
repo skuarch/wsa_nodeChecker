@@ -5,7 +5,9 @@ import java.net.Socket;
 import model.net.ModelSocket;
 import model.process.ProcessConfiguration;
 import model.process.ProcessConnectivity;
+import model.process.ProcessNetworkNode;
 import model.process.ProcessNotifier;
+import model.process.ProcessScheduler;
 import model.util.JSONUtilities;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -29,6 +31,8 @@ public final class RequestDispatcher extends Thread {
     //==========================================================================
     @Override
     public void run() {
+
+        setName("RequestDispatcher");
 
         if (socket == null || socket.isClosed()) {
             logger.error("socket is null or close");
@@ -58,10 +62,13 @@ public final class RequestDispatcher extends Thread {
         }
 
     } // end run    
-    
+
     //===========================================================================
     /**
      * distribute the request.
+     *
+     * @param jsonString
+     * @param ms
      */
     public void attendRequest(String jsonString, ModelSocket ms) {
 
@@ -93,7 +100,7 @@ public final class RequestDispatcher extends Thread {
                     new ProcessConfiguration(ms, jsono).getConfiguration();
                     break;
                 case "saveConfiguration":
-                    new ProcessConfiguration(ms, jsono).saveConfiguration();                    
+                    new ProcessConfiguration(ms, jsono).saveConfiguration();
                     break;
                 case "addNotifier":
                     new ProcessNotifier(ms, jsono).addNotifier();
@@ -107,18 +114,26 @@ public final class RequestDispatcher extends Thread {
                 case "deleteServerNotifier":
                     new ProcessNotifier(ms, jsono).deleteNotifier();
                     break;
-                    
+
                 //--------------------------------------------------------------
-                case "createTask":
-                    // to do here
-                    break;    
-                    
+                case "createScheduler":
+                    new ProcessScheduler(ms, jsono).createScheduler();
+                    break;
+
+                case "getSchedulers":                    
+                    break;
+
+                case "createNetworkNode":
+                    new ProcessNetworkNode(ms, jsono).createNetworkNode();
+                    break;
+
                 default:
+                    logger.error("attendRequest", new Exception("unknown request"));
                     responseUnknownResquest();
                     break;
 
             }
-            
+
         } catch (Exception e) {
             logger.error("attendRequest", e);
         } finally {

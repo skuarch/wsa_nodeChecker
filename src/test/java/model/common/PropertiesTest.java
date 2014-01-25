@@ -30,7 +30,11 @@ public class PropertiesTest extends TestCase {
     }
 
     public void testSomeMethod() throws IOException {
-       CustomProperties p = new CustomProperties();
+       
+        System.out.println("------------------------------------------------------------------------");
+        System.out.println("customProperties");
+        
+        CustomProperties p = new CustomProperties();
        p.getProperties().setProperty("", "");
     }
     

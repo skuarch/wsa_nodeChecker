@@ -62,6 +62,7 @@ public class ModelSocketTest extends TestCase {
      */
     public void testCloseStreams() throws IOException {
         
+        System.out.println("------------------------------------------------------------------------");
         System.out.println("closeStreams");
         
         Socket socket = new Socket("gdc.com.mx", 80);

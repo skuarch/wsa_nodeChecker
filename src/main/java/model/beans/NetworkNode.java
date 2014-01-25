@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -16,6 +18,18 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "network_node")
+@NamedQueries(
+        {
+            @NamedQuery(
+                    name = "getNetworkNodeByHost",
+                    query = "from NetworkNode as n where n.host = :host"
+            ),
+            @NamedQuery(
+                    name = "getNetworkNodeBySchedulerId",
+                    query = "from NetworkNode as n where n.scheduler.id = :id"
+            )
+        }
+)
 public class NetworkNode implements Serializable {
 
     @Id
@@ -32,6 +46,13 @@ public class NetworkNode implements Serializable {
 
     //==========================================================================
     public NetworkNode() {
+    } // NetworkNode
+    
+    //==========================================================================
+    public NetworkNode(String host, int timeout, Scheduler scheduler) {
+        this.host = host;
+        this.timeout = timeout;
+        this.scheduler = scheduler;
     } // NetworkNode
 
     public long getId() {
