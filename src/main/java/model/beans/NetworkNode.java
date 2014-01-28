@@ -26,7 +26,7 @@ import javax.persistence.Table;
             ),
             @NamedQuery(
                     name = "getNetworkNodeBySchedulerId",
-                    query = "from NetworkNode as n where n.scheduler.id = :id"
+                    query = "from NetworkNode as n where n.scheduler.id = :schedulerId"
             )
         }
 )
@@ -47,7 +47,7 @@ public class NetworkNode implements Serializable {
     //==========================================================================
     public NetworkNode() {
     } // NetworkNode
-    
+
     //==========================================================================
     public NetworkNode(String host, int timeout, Scheduler scheduler) {
         this.host = host;

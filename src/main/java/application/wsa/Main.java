@@ -1,6 +1,7 @@
 package application.wsa;
 
 import java.io.IOException;
+import model.common.SchedulerRunner;
 import model.common.ShutdownHook;
 import model.common.StartServer;
 import org.apache.log4j.Logger;
@@ -39,6 +40,9 @@ public final class Main {
             Runtime.getRuntime().addShutdownHook(new ShutdownHook());
             logger.info("**** starting program ****");
 
+            //run schedulers
+            new SchedulerRunner().runStoredSchedulers();
+            
             //create the serverSocket
             new StartServer().run();
 

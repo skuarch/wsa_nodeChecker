@@ -39,9 +39,9 @@ public final class SchedulerProcessor {
             @Override
             public void run() {
 
-                System.out.println("running " + scheduler.getName());
+                System.out.println("run  " + scheduler.getName());
                 stop = false;
-                boolean isAlive = false;
+                ArrayList<NetworkNode> nodes2 = null;
 
                 try {
 
@@ -49,10 +49,12 @@ public final class SchedulerProcessor {
                         new Notificator().sendMultipleNotification("nodes are empty");
                     }
 
-                    for (NetworkNode networkNode : nodes) {
+                    nodes2 = new ArrayList<>(nodes);
+
+                    for (NetworkNode networkNode : nodes2) {
 
                         if (stop) {
-                            break;
+                            return;
                         }
 
                         new Thread(new SimplePing(networkNode.getHost())).start();
@@ -62,12 +64,12 @@ public final class SchedulerProcessor {
                 } catch (Exception e) {
                     logger.error("run", e);
                 }
-
             }
+
         };
 
         timer = new Timer();
-        timer.scheduleAtFixedRate(timerTask, 0, scheduler.getPeriod() * 1000);
+        timer.scheduleAtFixedRate(timerTask, 1500, scheduler.getPeriod() * 1000);
 
     } // end runScheduler
 

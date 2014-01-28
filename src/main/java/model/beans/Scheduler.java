@@ -89,4 +89,11 @@ public class Scheduler implements Serializable {
         this.nodes = nodes;
     }
 
+    /*@Override
+    public String toString() {
+        return "id=" + id + " name=" + name + " period=" + period + " status=" + status + " nodes=" + nodes;
+    }*/
+    
+    
+
 } // end class

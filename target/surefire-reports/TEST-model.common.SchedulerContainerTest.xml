@@ -59,6 +59,6 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="0" classname="model.common.SchedulerContainerTest" name="testAddSchedulerProcessor"/>
-  <testcase time="0.001" classname="model.common.SchedulerContainerTest" name="testGetSchedulerProcessor"/>
+  <testcase time="0.001" classname="model.common.SchedulerContainerTest" name="testAddSchedulerProcessor"/>
+  <testcase time="0" classname="model.common.SchedulerContainerTest" name="testGetSchedulerProcessor"/>
 </testsuite>

@@ -29,7 +29,7 @@ public final class Notificator {
 
         JSONObject json = new JSONObject();
         String proxyUrl = null;
-        
+
         try {
 
             Hibernate.initialize(Notifier.class);
@@ -39,6 +39,38 @@ public final class Notificator {
             json.accumulate("request", "notification");
             json.accumulate("expectedReturn", "true");
             json.accumulate("description", text);
+
+            for (Notifier notifier : notifiers) {
+
+                json.accumulate("url", notifier.getUrl());
+
+                ClientRestfulPost crp = new ClientRestfulPost(proxyUrl);
+                crp.send(json.toString());
+                crp.post();
+                //System.out.println(crp.receive());
+                crp.closeClient();
+
+            }
+
+        } catch (Exception e) {
+            throw e;
+        }
+
+    } // end sendMultipleNotification
+
+    //==========================================================================
+    public void sendMultipleNotification(JSONObject json) throws Exception {
+
+        String proxyUrl = null;
+
+        try {
+            System.out.println(notifiers.size() + " putos");
+            Hibernate.initialize(Notifier.class);
+
+            proxyUrl = new CustomProperties().getStringPropertie("proxy.url");
+
+            json.accumulate("request", "notification");
+            json.accumulate("expectedReturn", "true");
 
             for (Notifier notifier : notifiers) {
 

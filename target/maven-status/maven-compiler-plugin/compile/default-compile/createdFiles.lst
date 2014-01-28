@@ -21,6 +21,7 @@ model/beans/NetworkNode.class
 model/process/Process.class
 model/common/Notificator.class
 model/dialect/hibernate/SQLiteDialect.class
+model/common/SchedulerRunner.class
 model/common/NetworkNodeContainer.class
 model/process/ProcessConfiguration.class
 model/process/ProcessNotifier.class

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import model.beans.NetworkNode;
+import model.beans.Scheduler;
 import model.dao.DAO;
 
 /**
@@ -57,5 +58,27 @@ public class ModelNetworkNode {
         new DAO().delete(networkNode);
 
     } // end deleteNetworkNode
+
+    //==========================================================================
+    public static ArrayList<NetworkNode> getNetworkNodes(Scheduler scheduler) {
+
+        if (scheduler == null || scheduler.getName().length() < 1) {
+            throw new IllegalArgumentException("scheduler is incorrect");
+        }
+
+        ArrayList<NetworkNode> nodes = null;
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("schedulerId", scheduler.getId() + "");
+        List<NetworkNode> list = new DAO().query("getNetworkNodeBySchedulerId", parameters, new NetworkNode());
+
+        if (list == null || list.size() < 1) {
+            throw new NullPointerException("list is null or empty");
+        } else {
+            nodes = new ArrayList<>(list);
+        }
+
+        return nodes;
+
+    } // end getNetworkNodes
 
 } // end clas
