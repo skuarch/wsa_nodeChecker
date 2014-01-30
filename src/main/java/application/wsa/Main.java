@@ -9,7 +9,7 @@ import org.apache.log4j.PropertyConfigurator;
 
 /**
  * this application sends a ICMP ping request for check the availability of the
- * network
+ * network host.
  *
  */
 public final class Main {

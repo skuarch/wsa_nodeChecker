@@ -6,6 +6,7 @@ import java.util.TimerTask;
 import model.beans.NetworkNode;
 import model.beans.Scheduler;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 
 /**
  *
@@ -19,11 +20,17 @@ public final class SchedulerProcessor {
     private TimerTask timerTask = null;
     private Timer timer = null;
     private boolean stop = false;
+    private int maxThreads = 500;
+    private int sleep = 2500;    
+    private SchedulerProcessor me;
 
     //==========================================================================
-    public SchedulerProcessor(Scheduler scheduler, ArrayList<NetworkNode> nodes) {
+    public SchedulerProcessor(Scheduler scheduler, ArrayList<NetworkNode> nodes, int maxThreads, int sleep) {
         this.scheduler = scheduler;
         this.nodes = nodes;
+        this.maxThreads = maxThreads;
+        this.sleep = sleep;
+        setMe();
     } // end SchedulerProcessor
 
     //==========================================================================    
@@ -33,7 +40,7 @@ public final class SchedulerProcessor {
 
     //==========================================================================
     public void runScheduler() {
-
+        
         timerTask = new TimerTask() {
 
             @Override
@@ -45,10 +52,9 @@ public final class SchedulerProcessor {
 
                 try {
 
-                    if (nodes == null || nodes.size() < 1) {
-                        new Notificator().sendMultipleNotification("nodes are empty");
-                    }
+                    checkNotificators();
 
+                    //create a copy of nodes to avoid synchronization
                     nodes2 = new ArrayList<>(nodes);
 
                     for (NetworkNode networkNode : nodes2) {
@@ -57,9 +63,14 @@ public final class SchedulerProcessor {
                             return;
                         }
 
-                        new Thread(new SimplePing(networkNode.getHost())).start();
+                        if (Counter.getCounter() >= maxThreads) {
+                            //take a break to release some threads                            
+                            Thread.sleep(sleep);
+                        }
 
-                    }
+                        new Thread(new PingProcedure(networkNode,me)).start();
+
+                    } // end for
 
                 } catch (Exception e) {
                     logger.error("run", e);
@@ -91,6 +102,37 @@ public final class SchedulerProcessor {
         timerTask.cancel();
         timer = null;
         timerTask = null;
-    } // end stopScheduler
+    } // end stopScheduler  
+
+    //==========================================================================
+    private void checkNotificators() throws Exception {
+
+        if (nodes == null || nodes.size() < 1) {
+            JSONObject jsono = new JSONObject();
+            jsono.accumulate("request", "noNodesToCheck");
+            jsono.accumulate("expectedReturn", "true");
+            jsono.accumulate("host", "");
+            jsono.accumulate("description", "the scheduler " + scheduler.getName() + " doesn't have a nodes");
+            jsono.accumulate("scheduler", scheduler.getName());
+            new Notificator().sendMultipleNotification(jsono);
+        }
+
+    } // end checkNotificators   
+
+    private void setMe(){
+        me = this;
+    }
+
+    public Scheduler getScheduler() {
+        return scheduler;
+    }
+
+    public ArrayList<NetworkNode> getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(ArrayList<NetworkNode> nodes) {
+        this.nodes = nodes;
+    }
 
 } // end class

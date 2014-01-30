@@ -12,7 +12,7 @@ public class ProcessSimplePing extends Process {
 
     //==========================================================================
     public ProcessSimplePing(ModelSocket ms, JSONObject jsono) {
-        super(ms, jsono);
+        super(ms, jsono,ProcessSimplePing.class);
     } // end ProcessSimplePing
 
     //==========================================================================
@@ -22,7 +22,7 @@ public class ProcessSimplePing extends Process {
         boolean isAlive = false;
 
         try {
-            
+
             host = jsono.getString("host");
             isAlive = new ExecutePing().run(host);
 
@@ -31,7 +31,7 @@ public class ProcessSimplePing extends Process {
         } catch (Exception e) {
             sendError(e.getMessage());
             logger.error("runSimplePing", e);
-        }finally{
+        } finally {
             ms.closeStreams();
         }
 

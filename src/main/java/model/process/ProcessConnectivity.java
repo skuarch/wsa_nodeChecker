@@ -13,7 +13,7 @@ public final class ProcessConnectivity extends Process {
 
     //==========================================================================
     public ProcessConnectivity(ModelSocket ms, JSONObject jsono) {
-        super(ms, jsono);
+        super(ms, jsono,ProcessConnectivity.class);
     } // end ProcessConnectivity
 
     //==========================================================================

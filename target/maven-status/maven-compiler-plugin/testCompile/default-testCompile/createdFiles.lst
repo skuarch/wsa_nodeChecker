@@ -1,9 +1,10 @@
 model/common/ModelConfigurationTest.class
+model/common/DeepPingTest.class
 model/common/ModelNetworkNodeTest.class
 model/net/ModelSocketTest.class
 model/util/PropertyUtilitiesTest.class
-model/dao/DAOTest.class
 model/common/StartServerTest.class
+model/dao/DAOTest.class
 model/common/ModelNotifierTest.class
 model/common/NetworkNodeContainerTest.class
 application/wsa/MainTest.class

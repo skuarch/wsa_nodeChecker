@@ -79,7 +79,7 @@ public class NetworkNodeContainerTest extends TestCase {
         ArrayList<NetworkNode> nodes = new ArrayList<>();
         
         NetworkNodeContainer.addArrayList("four", nodes);        
-        nodes.add(new NetworkNode("four",1,new Scheduler()));        
+        nodes.add(new NetworkNode("four",1,new Scheduler(),1));        
         System.out.println(NetworkNodeContainer.getArrayList("four"));
         
     }

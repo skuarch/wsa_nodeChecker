@@ -1,10 +1,10 @@
-#mysql -uroot -pvitalnoc <<MYSQLEOF
+mysql -uroot -pvitalnoc <<MYSQLEOF
 
-#DROP DATABASE IF EXISTS wsa;
+DROP DATABASE IF EXISTS wsa;
 
-#CREATE DATABASE wsa;
+CREATE DATABASE wsa;
 
-#MYSQLEOF
+MYSQLEOF
 
 cd target/
 

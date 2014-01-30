@@ -7,17 +7,17 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 /**
- *
+ * the class that extends of this class has a lot of business logic.
  * @author skuarch
  */
 abstract class Process {
 
-    static final Logger logger = Logger.getLogger(Process.class);
+    Logger logger = null;
     ModelSocket ms = null;
     JSONObject jsono = null;    
     
     //==========================================================================
-    Process(ModelSocket ms, JSONObject jsono) {
+    Process(ModelSocket ms, JSONObject jsono, Class klass) {
 
         if (ms == null) {
             throw new IllegalArgumentException("ms is null");
@@ -29,6 +29,8 @@ abstract class Process {
 
         this.ms = ms;
         this.jsono = jsono;
+        
+        logger = Logger.getLogger(klass);
         
     } // end Process
     

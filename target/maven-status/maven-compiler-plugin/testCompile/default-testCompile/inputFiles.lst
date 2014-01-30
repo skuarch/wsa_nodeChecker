@@ -1,3 +1,4 @@
+/home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/common/DeepPingTest.java
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/dao/DAOTest.java
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/util/PropertyUtilitiesTest.java
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/process/ProcessConfigurationTest.java
@@ -8,8 +9,8 @@
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/net/ModelSocketTest.java
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/application/wsa/MainTest.java
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/common/NetworkNodeContainerTest.java
-/home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/common/ModelConfigurationTest.java
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/common/PropertiesTest.java
+/home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/common/ModelConfigurationTest.java
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/common/ModelSchedulerTest.java
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/net/ClientRestfulPostTest.java
 /home/skuarch/NetBeansProjects/wsa_nodeChecker/src/test/java/model/common/SchedulerContainerTest.java

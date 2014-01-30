@@ -5,9 +5,9 @@ import java.net.Socket;
 import model.net.ModelSocket;
 import model.process.ProcessConfiguration;
 import model.process.ProcessConnectivity;
-import model.process.ProcessNetworkNode;
+import model.process.ProcessNetworkNodeCreate;
 import model.process.ProcessNotifier;
-import model.process.ProcessScheduler;
+import model.process.ProcessSchedulerCreate;
 import model.util.JSONUtilities;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -117,14 +117,14 @@ public final class RequestDispatcher extends Thread {
 
                 //--------------------------------------------------------------
                 case "createScheduler":
-                    new ProcessScheduler(ms, jsono).createScheduler();
+                    new ProcessSchedulerCreate(ms, jsono).run();
                     break;
 
                 case "getSchedulers":                    
                     break;
 
                 case "createNetworkNode":
-                    new ProcessNetworkNode(ms, jsono).createNetworkNode();
+                    new ProcessNetworkNodeCreate(ms, jsono).run();
                     break;
 
                 default:

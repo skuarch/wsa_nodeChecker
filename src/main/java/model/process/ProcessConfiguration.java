@@ -17,7 +17,7 @@ public final class ProcessConfiguration extends Process {
 
     //==========================================================================
     public ProcessConfiguration(ModelSocket ms, JSONObject jsono) {
-        super(ms, jsono);
+        super(ms, jsono,ProcessConfiguration.class);
     } // end ProcessConfiguration   
 
     //==========================================================================
