@@ -32,6 +32,8 @@ import javax.persistence.Table;
 )
 public class NetworkNode implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    
     @Id
     @Column(name = "network_node_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

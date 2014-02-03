@@ -1,7 +1,6 @@
 package model.process;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
 import model.common.ModelConfiguration;
@@ -13,34 +12,16 @@ import org.json.JSONObject;
  *
  * @author skuarch
  */
-public final class ProcessConfiguration extends Process {
+public class SaveConfiguration extends Process {
 
     //==========================================================================
-    public ProcessConfiguration(ModelSocket ms, JSONObject jsono) {
-        super(ms, jsono,ProcessConfiguration.class);
-    } // end ProcessConfiguration   
+    public SaveConfiguration(ModelSocket ms, JSONObject jsono) {
+        super(ms, jsono, SaveConfiguration.class);
+    }
 
     //==========================================================================
-    public void getConfiguration() {
-
-        HashMap<String, Object> configuration = null;
-
-        try {
-
-            configuration = ModelConfiguration.getHashMapConfiguration();
-            ms.send(new JSONObject(configuration).toString());
-
-        } catch (IOException e) {
-            logger.error("responseGetConfiguration", e);
-            sendError(e.getMessage());
-        } finally {
-            ms.closeStreams();
-        }
-
-    } // end getConfiguration
-
-    //==========================================================================
-    public void saveConfiguration() {
+    @Override
+    public void run() throws IOException, NullPointerException {
 
         Properties properties = null;
         Iterator iterator = null;
@@ -56,7 +37,7 @@ public final class ProcessConfiguration extends Process {
 
                 key = (String) iterator.next();
                 value = jsono.getString(key);
-                
+
                 properties.setProperty(key, (String) value);
 
             }
@@ -65,12 +46,12 @@ public final class ProcessConfiguration extends Process {
             ms.send("{\"saved\":\"true\"}");
 
         } catch (JSONException | IOException e) {
-            logger.error("responseEditConfiguration", e);
+            logger.error("run", e);
             sendError(e.getMessage());
         } finally {
             ms.closeStreams();
         }
-
-    } // end editConfiguration
+        
+    } // end run
 
 } // end class

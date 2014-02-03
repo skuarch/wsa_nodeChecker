@@ -6,7 +6,6 @@ import model.beans.NetworkNode;
 import model.beans.Scheduler;
 import model.common.ModelNetworkNode;
 import model.common.ModelScheduler;
-import model.common.NetworkNodeContainer;
 import model.common.SchedulerContainer;
 import model.common.SchedulerProcessor;
 import model.net.ModelSocket;
@@ -25,8 +24,7 @@ public class ProcessNetworkNodeCreate extends Process {
     private String schedulerName = null;
     private int triggerAlarm = 0;
     private Scheduler scheduler = null;
-    private NetworkNode networkNode = null;
-    private ArrayList<NetworkNode> nodes = null;
+    private NetworkNode networkNode = null;    
     private SchedulerProcessor schedulerProcessor = null;
 
     //==========================================================================
@@ -44,18 +42,22 @@ public class ProcessNetworkNodeCreate extends Process {
             }
 
             initVariables();
+            
+            if(!validateIfExistsScheduler()){
+                sendResponse("{\"created\":\"false\",\"error\":\"invalid scheduler\"}");
+                return;
+            }
 
             if (!validateMaxNodesScheduler()) {
+                sendResponse("{\"created\":\"false\",\"error\":\"max nodes\"}");
                 return;
             }
 
             saveNetworkNode();
 
-            reloadContextNetworkNode();
+            addNodeSchedulerProcessor();            
 
-            refreshSchedulerProcessor();
-
-            sendResponse();
+            sendResponse("{\"created\":\"true\"}");
 
         } catch (IOException | JSONException | NullPointerException e) {
             logger.error("run", e);
@@ -87,12 +89,18 @@ public class ProcessNetworkNodeCreate extends Process {
         schedulerName = (String) jsono.get("schedulerName");
         scheduler = ModelScheduler.getSchedulerByName(schedulerName);
         networkNode = new NetworkNode(host, timeout, scheduler, triggerAlarm);
+        schedulerProcessor = SchedulerContainer.getSchedulerProcessor(schedulerName);
     } // end initVariables 
+    
+    //==========================================================================
+    public boolean validateIfExistsScheduler(){        
+        return scheduler != null;
+    } // end validateIfExistsScheduler
 
     //==========================================================================
     private boolean validateMaxNodesScheduler() throws IOException {
 
-        ArrayList<NetworkNode> n = NetworkNodeContainer.getArrayList(schedulerName);
+        ArrayList<NetworkNode> n = schedulerProcessor.getNodes();
 
         if (n.size() >= 254) {
             ms.send("{\"error\":\"only 254 nodes are allowed per scheduler\"}");
@@ -100,6 +108,7 @@ public class ProcessNetworkNodeCreate extends Process {
         }
 
         return true;
+        
     } // end validateMaxNodesScheduler
 
     //==========================================================================
@@ -108,23 +117,9 @@ public class ProcessNetworkNodeCreate extends Process {
     } // end saveNetworkNode
 
     //==========================================================================
-    private void reloadContextNetworkNode() {
-        nodes = NetworkNodeContainer.getArrayList(schedulerName);
-        nodes.add(networkNode);
-        NetworkNodeContainer.updateArrayList(schedulerName, nodes);
+    private void addNodeSchedulerProcessor() {
+        schedulerProcessor.addNetworkNode(networkNode);
     } // end reloadContextNetworkNode
-
-    //==========================================================================
-    private void refreshSchedulerProcessor() {
-        schedulerProcessor = SchedulerContainer.getSchedulerProcessor(schedulerName);
-        schedulerProcessor.stopScheduler();
-        schedulerProcessor.realodNodes(nodes);
-        schedulerProcessor.runScheduler();
-    } // end refreshSchedulerProcessor
-
-    //==========================================================================
-    private void sendResponse() throws IOException {
-        ms.send("{\"created\":\"true\"}");
-    } // end sendResponse
+    
 
 } // end class

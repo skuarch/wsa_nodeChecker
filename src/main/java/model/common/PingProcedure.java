@@ -3,13 +3,12 @@ package model.common;
 import java.util.ArrayList;
 import model.beans.NetworkNode;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 
 /**
  *
  * @author skuarch
  */
-public final class PingProcedure extends Thread {
+public final class PingProcedure extends Thread{
 
     private static final Logger logger = Logger.getLogger(PingProcedure.class);
     private NetworkNode networkNode = null;
@@ -21,7 +20,7 @@ public final class PingProcedure extends Thread {
         this.schedulerProcessor = schedulerProcessor;
     } // end PingProcedure
 
-    //==========================================================================
+    //==========================================================================    
     @Override
     public void run() {
 
@@ -29,12 +28,12 @@ public final class PingProcedure extends Thread {
 
         try {
 
-            Counter.increaseCounter();
+            
             isAlive = new ExecutePing().run(networkNode.getHost());
 
             if (!isAlive) {
                 
-                removeNodeFromContext();
+                removeNodeFromSchedulerProcessor();
                 new DeepPing(networkNode,schedulerProcessor).run();                
 
             } 
@@ -48,27 +47,12 @@ public final class PingProcedure extends Thread {
     } // end run
 
     //==========================================================================
-    private void removeNodeFromContext() {
+    private void removeNodeFromSchedulerProcessor() {
 
         ArrayList<NetworkNode> nodes = schedulerProcessor.getNodes();
         nodes.remove(networkNode);
         schedulerProcessor.setNodes(nodes);
 
-    }
-
-    //==========================================================================
-    private JSONObject getJsonNotification() {
-
-        JSONObject jsonNotification = new JSONObject();
-        jsonNotification.accumulate("request", "notification");
-        jsonNotification.accumulate("expectedReturn", "true");
-        jsonNotification.accumulate("host", networkNode.getHost());
-        jsonNotification.accumulate("isAlive", false);
-        jsonNotification.accumulate("timestamp", System.currentTimeMillis());
-        jsonNotification.accumulate("description", "the host " + networkNode.getHost() + " didn't responsed to icmp ping");
-
-        return jsonNotification;
-
-    } // end getJsonNotification
-
+    } // end removeNodeFromSchedulerProcessor
+    
 } // end class

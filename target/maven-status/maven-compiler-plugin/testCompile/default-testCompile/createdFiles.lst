@@ -3,10 +3,9 @@ model/common/DeepPingTest.class
 model/common/ModelNetworkNodeTest.class
 model/net/ModelSocketTest.class
 model/util/PropertyUtilitiesTest.class
-model/common/StartServerTest.class
 model/dao/DAOTest.class
+model/common/StartServerTest.class
 model/common/ModelNotifierTest.class
-model/common/NetworkNodeContainerTest.class
 application/wsa/MainTest.class
 model/process/ProcessConfigurationTest.class
 model/process/ProcessNotifierTest.class

@@ -6,7 +6,6 @@ import model.beans.NetworkNode;
 import model.beans.Scheduler;
 import model.common.CustomProperties;
 import model.common.ModelScheduler;
-import model.common.NetworkNodeContainer;
 import model.common.SchedulerContainer;
 import model.common.SchedulerProcessor;
 import model.net.ModelSocket;
@@ -15,7 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- *
+ * business logic to create a Scheduler task.
  * @author skuarch
  */
 public class ProcessSchedulerCreate extends Process {
@@ -26,32 +25,46 @@ public class ProcessSchedulerCreate extends Process {
     private int sleep = 2500;
     private int maxThreads = 500;
     private Scheduler scheduler = null;
+    private SchedulerProcessor schedulerProcessor = null;
     private ArrayList<NetworkNode> nodes = null;
 
     //==========================================================================
+    /**
+     * create a instance.
+     * @param ms ModelSocket
+     * @param jsono JSONObject
+     */
     public ProcessSchedulerCreate(ModelSocket ms, JSONObject jsono) {
         super(ms, jsono, ProcessSchedulerCreate.class);
-    }
+    } // end ProcessSchedulerCreate
 
     //==========================================================================
+    @Override
     public void run() throws IOException {
 
         try {
 
             if (!validateJson()) {
+                ms.send("{\"error\":\"json is incorrect\"}");
                 return;
             }
 
             initVariables();
 
-            if (!validateScheduler()) {
+            if (!validateNameScheduler()) {
+                sendResponse("{\"error\":\"scheduler name is incorrect\"}");
                 return;
             }
 
+            if (!validateIfExistsScheduler()) {
+                sendResponse("{\"error\":\"scheduler already exists\"}");
+                return;
+            }
+            
             saveScheduler();
-            createContextNetworkNode();
-            runProcess();
-            sendResponse();
+            addSchedulerProccesor();
+            runSchedulerProcess();
+            sendResponse("{\"created\":\"true\"}");
 
         } catch (JSONException | IOException | NullPointerException e) {
             logger.error("run", e);
@@ -60,13 +73,17 @@ public class ProcessSchedulerCreate extends Process {
             ms.closeStreams();
         }
 
-    } // end createScheduler
+    } // end run
 
     //==========================================================================
+    /**
+     * validate if the JSON has a correct parameters.
+     * @return boolean
+     * @throws IOException 
+     */
     private boolean validateJson() throws IOException {
 
         if (!jsono.has("schedulerName") || !jsono.has("schedulerPeriod") || !jsono.has("schedulerStatus")) {
-            ms.send("{\"error\":\"json is incorrect\"}");
             logger.error("createScheduler", new Exception("json is incorrect"));
             return false;
         }
@@ -75,26 +92,33 @@ public class ProcessSchedulerCreate extends Process {
     } // end validateJson
 
     //==========================================================================
-    private void initVariables() {
+    /**
+     * set up the variables.
+     * @throws IOException 
+     */
+    private void initVariables() throws IOException {
 
         name = jsono.getString("schedulerName");
         period = jsono.getInt("schedulerPeriod");
         status = jsono.getBoolean("schedulerStatus");
+        maxThreads = new CustomProperties().getIntPropertie("thread.max.ping");
+        sleep = new CustomProperties().getIntPropertie("sleep.time.1");
+        nodes = new ArrayList<>();
+        scheduler = new Scheduler(name, period, status);
+        schedulerProcessor = new SchedulerProcessor(scheduler, nodes, maxThreads, sleep);
 
     } // end initVariables
 
     //==========================================================================
-    private boolean validateScheduler() throws IOException {
+    /**
+     * the name of the scheduler can't be a number.
+     * @return boolean
+     * @throws IOException 
+     */
+    private boolean validateNameScheduler() throws IOException {
 
         if (NumberUtils.isNumber(name)) {
-            ms.send("{\"error\":\"scheduler name is incorrect\"}");
-            logger.error("createScheduler", new IllegalArgumentException("scheduler name is incorrect"));
-            return false;
-        }
-
-        if (ModelScheduler.existsScheduler(name)) {
-            ms.send("{\"error\":\"scheduler already exists\"}");
-            logger.error("createScheduler", new IllegalArgumentException("scheduler already exists"));
+            logger.error("validateNameScheduler", new IllegalArgumentException("scheduler name is incorrect"));
             return false;
         }
 
@@ -103,29 +127,43 @@ public class ProcessSchedulerCreate extends Process {
     } // end validateScheduler
 
     //==========================================================================
+    /**
+     * validate if the scheduler already exists.
+     * @return boolean
+     */
+    private boolean validateIfExistsScheduler() {
+
+        if (ModelScheduler.existsScheduler(name)) {
+            logger.error("validateIfExistsScheduler", new IllegalArgumentException("scheduler already exists"));
+            return false;
+        }
+
+        return true;
+    } // end validateIfExistsScheduler
+
+    //==========================================================================
+    /**
+     * save scheduler in the database.
+     */
     private void saveScheduler() {
-        scheduler = new Scheduler(name, period, status);
         ModelScheduler.createScheduler(scheduler);
     } // end saveScheduler
 
     //==========================================================================
-    private void createContextNetworkNode() {
-        nodes = new ArrayList<>();
-        NetworkNodeContainer.addArrayList(name, nodes);
-    } // end createContextNetworkNode
-
-    //==========================================================================
-    private void runProcess() throws IOException {
-        maxThreads = new CustomProperties().getIntPropertie("thread.max.ping");
-        sleep = new CustomProperties().getIntPropertie("sleep.time.1");
-        SchedulerProcessor schedulerProcessor = new SchedulerProcessor(scheduler, nodes, maxThreads, sleep);
+    /**
+     * add SchedulerProcessor to the container.
+     */
+    private void addSchedulerProccesor() {
         SchedulerContainer.addSchedulerProcessor(schedulerProcessor);
-        schedulerProcessor.runScheduler();
-    } // end runProcess
+    } // end addSchedulerProccesor
 
     //==========================================================================
-    private void sendResponse() throws IOException {
-        ms.send("{\"created\":\"true\"}");
-    } // end sendResponse
+    /**
+     * start the scheduler task.
+     * @throws IOException 
+     */
+    private void runSchedulerProcess() throws IOException {
+        schedulerProcessor.run();
+    } // end runProcess
 
 } // end class

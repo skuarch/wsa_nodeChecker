@@ -13,12 +13,12 @@ public final class ProcessConnectivity extends Process {
 
     //==========================================================================
     public ProcessConnectivity(ModelSocket ms, JSONObject jsono) {
-        super(ms, jsono,ProcessConnectivity.class);
+        super(ms, jsono, ProcessConnectivity.class);
     } // end ProcessConnectivity
 
     //==========================================================================
-    public void connectivity() {
-
+    @Override
+    public void run() throws IOException, NullPointerException {
         JSONObject response = null;
 
         try {
@@ -33,7 +33,6 @@ public final class ProcessConnectivity extends Process {
         } finally {
             ms.closeStreams();
         }
-
-    } // end connectivity
+    }
 
 } // end class

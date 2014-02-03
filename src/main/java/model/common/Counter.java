@@ -6,24 +6,20 @@ package model.common;
  */
 public class Counter {
 
-    private  static Integer counter = new Integer(0);
+    private static Integer counter = Integer.valueOf(0);
 
     //==========================================================================
     private Counter() {
     } // end Counter
 
     //==========================================================================
-    public static void increaseCounter() {
-        synchronized (counter) {
-            ++counter;
-        }
+    public static synchronized void increaseCounter() {
+        ++counter;
     }
 
     //==========================================================================
-    public static void decreaseCounter() {
-        synchronized (counter) {
-            --counter;
-        }
+    public static synchronized void decreaseCounter() {
+        --counter;
     }
 
     //==========================================================================

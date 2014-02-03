@@ -87,8 +87,8 @@ public final class ClientRestfulPost implements ClientRestful {
                 throw new Exception("bad response from server " + status);
             }
 
-            bais = new ByteArrayInputStream(clientResponse.getEntity().getBytes());
-            isr = new InputStreamReader(bais);
+            bais = new ByteArrayInputStream(clientResponse.getEntity().getBytes("UTF-8"));
+            isr = new InputStreamReader(bais,"UTF-8");
             br = new BufferedReader(isr);
 
             while ((inputString = br.readLine()) != null) {

@@ -3,11 +3,15 @@ package model.common;
 import java.io.IOException;
 import java.net.Socket;
 import model.net.ModelSocket;
-import model.process.ProcessConfiguration;
+import model.process.AddNotifier;
+import model.process.DeleteNotifier;
+import model.process.GetConfiguration;
+import model.process.GetNotifier;
+import model.process.GetNotifiers;
 import model.process.ProcessConnectivity;
 import model.process.ProcessNetworkNodeCreate;
-import model.process.ProcessNotifier;
 import model.process.ProcessSchedulerCreate;
+import model.process.SaveConfiguration;
 import model.util.JSONUtilities;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -44,17 +48,8 @@ public final class RequestDispatcher extends Thread {
             ms = new ModelSocket(socket);
             textReceived = ms.receive();
 
-            if (textReceived == null || textReceived.length() < 1) {
-
-                ms.closeStreams();
-                throw new NullPointerException("data received from client is null or empty");
-
-            } else {
-
-                System.out.println(textReceived);
-                attendRequest(textReceived, ms);
-
-            }
+            System.out.println(textReceived);
+            attendRequest(textReceived, ms);
 
         } catch (IOException | NullPointerException ioe) {
             ms.closeStreams();
@@ -69,8 +64,9 @@ public final class RequestDispatcher extends Thread {
      *
      * @param jsonString
      * @param ms
+     * @throws java.io.IOException
      */
-    public void attendRequest(String jsonString, ModelSocket ms) {
+    public void attendRequest(String jsonString, ModelSocket ms) throws IOException {
 
         if (jsonString == null || jsonString.length() < 1) {
             throw new IllegalArgumentException("jsonString is null or empty");
@@ -88,56 +84,48 @@ public final class RequestDispatcher extends Thread {
             throw new RuntimeException("request is null or empty");
         }
 
-        try {
+        switch (request) {
 
-            switch (request) {
+            //basic configuration ------------------------------------------
+            case "connectivity":
+                new ProcessConnectivity(ms, jsono).run();
+                break;
+            case "getConfiguration":
+                new GetConfiguration(ms, jsono).run();
+                break;
+            case "saveConfiguration":
+                new SaveConfiguration(ms, jsono).run();
+                break;
+            case "addNotifier":
+                new AddNotifier(ms, jsono).run();
+                break;
+            case "getNotifiers":
+                new GetNotifiers(ms, jsono).run();
+                break;
+            case "getNotifier":
+                new GetNotifier(ms, jsono).run();
+                break;
+            case "deleteNotifier":
+                new DeleteNotifier(ms, jsono).run();
+                break;
 
-                //basic configuration ------------------------------------------
-                case "connectivity":
-                    new ProcessConnectivity(ms, jsono).connectivity();
-                    break;
-                case "getConfiguration":
-                    new ProcessConfiguration(ms, jsono).getConfiguration();
-                    break;
-                case "saveConfiguration":
-                    new ProcessConfiguration(ms, jsono).saveConfiguration();
-                    break;
-                case "addNotifier":
-                    new ProcessNotifier(ms, jsono).addNotifier();
-                    break;
-                case "getNotifiers":
-                    new ProcessNotifier(ms, jsono).getNotifiers();
-                    break;
-                case "getNotifier":
-                    new ProcessNotifier(ms, jsono).getNotifier();
-                    break;
-                case "deleteServerNotifier":
-                    new ProcessNotifier(ms, jsono).deleteNotifier();
-                    break;
+            //--------------------------------------------------------------
+            case "createScheduler":
+                new ProcessSchedulerCreate(ms, jsono).run();
+                break;
 
-                //--------------------------------------------------------------
-                case "createScheduler":
-                    new ProcessSchedulerCreate(ms, jsono).run();
-                    break;
+            case "getSchedulers":
+                break;
 
-                case "getSchedulers":                    
-                    break;
+            case "createNetworkNode":
+                new ProcessNetworkNodeCreate(ms, jsono).run();
+                break;
 
-                case "createNetworkNode":
-                    new ProcessNetworkNodeCreate(ms, jsono).run();
-                    break;
+            default:
+                logger.error("attendRequest", new Exception("unknown request"));
+                responseUnknownResquest();
+                break;
 
-                default:
-                    logger.error("attendRequest", new Exception("unknown request"));
-                    responseUnknownResquest();
-                    break;
-
-            }
-
-        } catch (Exception e) {
-            logger.error("attendRequest", e);
-        } finally {
-            ms.closeStreams();
         }
 
     } // end attendRequest

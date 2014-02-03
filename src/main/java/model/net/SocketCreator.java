@@ -56,7 +56,7 @@ public final class SocketCreator {
 
         } catch (IOException e) {
             logger.error("the process is already running or another process is using the same port");
-            System.exit(0);
+            throw new RuntimeException("the process is already running or another process is using the same port");
         } finally {
             IOUtilities.closeServerSocket(serverSocket);
         }

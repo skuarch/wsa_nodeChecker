@@ -25,6 +25,8 @@ import javax.persistence.Table;
                 query = "from Scheduler as s where s.name = :name"))
 public class Scheduler implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    
     @Id
     @Column(name = "scheduler_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

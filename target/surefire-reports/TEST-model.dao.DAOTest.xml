@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="3.9" errors="0" skipped="0" tests="10" name="model.dao.DAOTest">
+<testsuite failures="0" time="2.303" errors="0" skipped="0" tests="10" name="model.dao.DAOTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/jdk1.7.0_45/jre/lib/amd64"/>
@@ -59,14 +59,14 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="3.365" classname="model.dao.DAOTest" name="testCreate"/>
+  <testcase time="0" classname="model.dao.DAOTest" name="testQuery_4args"/>
+  <testcase time="1.862" classname="model.dao.DAOTest" name="testUpdate"/>
+  <testcase time="0.1" classname="model.dao.DAOTest" name="testCreate"/>
   <testcase time="0.1" classname="model.dao.DAOTest" name="testDelete"/>
-  <testcase time="0.125" classname="model.dao.DAOTest" name="testGet"/>
-  <testcase time="0.142" classname="model.dao.DAOTest" name="testGetList"/>
-  <testcase time="0.004" classname="model.dao.DAOTest" name="testHql_String_GenericType"/>
-  <testcase time="0.004" classname="model.dao.DAOTest" name="testHql_3args"/>
+  <testcase time="0.117" classname="model.dao.DAOTest" name="testGet"/>
+  <testcase time="0.109" classname="model.dao.DAOTest" name="testGetList"/>
+  <testcase time="0.005" classname="model.dao.DAOTest" name="testHql_String_GenericType"/>
+  <testcase time="0.006" classname="model.dao.DAOTest" name="testHql_3args"/>
   <testcase time="0.004" classname="model.dao.DAOTest" name="testQuery_String_GenericType"/>
   <testcase time="0" classname="model.dao.DAOTest" name="testQuery_3args"/>
-  <testcase time="0.001" classname="model.dao.DAOTest" name="testQuery_4args"/>
-  <testcase time="0.155" classname="model.dao.DAOTest" name="testUpdate"/>
 </testsuite>

@@ -54,8 +54,8 @@ public class ExecuteCommand {
 
         try {
 
-            try (
-                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            try (                    
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
                     BufferedReader bufferedReader = new BufferedReader(inputStreamReader);) {
 
                 while ((line = bufferedReader.readLine()) != null) {

@@ -23,24 +23,25 @@ public final class SchedulerRunner {
         int sleep = 2500;
         int maxThreads = 500;
 
-        if (schedulers == null || schedulers.size() < 1) {
-            System.out.println("no schedulers to run");
-            return;
-        }
+        try {
 
-        for (Scheduler scheduler : schedulers) {
+            for (Scheduler scheduler : schedulers) {
 
-            //create the context of network nodes
-            ArrayList<NetworkNode> nodes = ModelNetworkNode.getNetworkNodes(scheduler);
-            NetworkNodeContainer.addArrayList(scheduler.getName(), nodes);
+                //create the context of network nodes
+                ArrayList<NetworkNode> nodes = ModelNetworkNode.getNetworkNodes(scheduler);
 
-            //run the process            
-            maxThreads = new CustomProperties().getIntPropertie("thread.max.ping");
-            sleep = new CustomProperties().getIntPropertie("sleep.time.1");
-            SchedulerProcessor schedulerProcessor = new SchedulerProcessor(scheduler, nodes,maxThreads, sleep);
-            SchedulerContainer.addSchedulerProcessor(schedulerProcessor);
-            schedulerProcessor.runScheduler();
-            
+                //run the process            
+                maxThreads = new CustomProperties().getIntPropertie("thread.max.ping");
+                sleep = new CustomProperties().getIntPropertie("sleep.time.1");
+                SchedulerProcessor schedulerProcessor = new SchedulerProcessor(scheduler, nodes, maxThreads, sleep);
+                schedulerProcessor.setNodes(nodes);
+                SchedulerContainer.addSchedulerProcessor(schedulerProcessor);
+                schedulerProcessor.run();
+
+            }
+
+        } catch (IOException e) {
+            throw e;
         }
 
     } // end runStoredShcedulers

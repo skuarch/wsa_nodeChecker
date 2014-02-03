@@ -8,7 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 
 /**
@@ -23,6 +22,8 @@ import javax.persistence.Table;
 })
 public class Notifier implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    
     @Id
     @Column(name = "notifier_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

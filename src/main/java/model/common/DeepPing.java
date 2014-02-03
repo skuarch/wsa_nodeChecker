@@ -25,7 +25,7 @@ public final class DeepPing {
     public void run() {
 
         boolean isAlive = false;
-        long endTime = System.currentTimeMillis() + networkNode.getTriggerAlarm() * 1000;
+        long endTime = System.currentTimeMillis() + (networkNode.getTriggerAlarm() * 1000);
 
         try {
 

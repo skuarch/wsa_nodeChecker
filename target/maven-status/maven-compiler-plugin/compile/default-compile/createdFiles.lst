@@ -4,6 +4,7 @@ model/common/SchedulerProcessor$1.class
 model/util/JSONUtilities.class
 model/common/CustomProperties.class
 model/common/ModelConfiguration.class
+model/process/DeleteNotifier.class
 application/wsa/Main.class
 model/net/ClientRestful.class
 model/process/ProcessSchedulerCreate.class
@@ -20,16 +21,15 @@ model/beans/NetworkNode.class
 model/process/Process.class
 model/common/Notificator.class
 model/dialect/hibernate/SQLiteDialect.class
+model/process/GetNotifier.class
 model/common/PingProcedure.class
 model/common/SchedulerRunner.class
-model/common/NetworkNodeContainer.class
-model/common/SchedulerProcessor2.class
-model/process/ProcessConfiguration.class
-model/process/ProcessNotifier.class
 model/beans/Notifier.class
 model/process/ProcessNetworkNodeCreate.class
 model/common/ExecuteCommand.class
 model/common/ShutdownHook.class
+model/process/SaveConfiguration.class
+model/process/GetNotifiers.class
 model/common/Counter.class
 model/common/ExecutePing.class
 model/common/ContinuePing.class
@@ -38,5 +38,7 @@ model/util/IOUtilities.class
 model/beans/Scheduler.class
 model/net/SocketCreator.class
 model/common/ModelNotifier.class
+model/process/AddNotifier.class
 model/util/PropertyUtilities.class
 model/common/RequestDispatcher.class
+model/process/GetConfiguration.class

@@ -12,101 +12,68 @@ import org.json.JSONObject;
  *
  * @author skuarch
  */
-public final class SchedulerProcessor {
+public class SchedulerProcessor {
 
     private static final Logger logger = Logger.getLogger(SchedulerProcessor.class);
     private Scheduler scheduler = null;
     private ArrayList<NetworkNode> nodes = null;
+    private ArrayList<NetworkNode> nodesCopy = null;
     private TimerTask timerTask = null;
     private Timer timer = null;
-    private boolean stop = false;
     private int maxThreads = 500;
-    private int sleep = 2500;    
-    private SchedulerProcessor me;
+    private int sleep = 2500;
+    private int delay = 1500;
 
     //==========================================================================
     public SchedulerProcessor(Scheduler scheduler, ArrayList<NetworkNode> nodes, int maxThreads, int sleep) {
+
         this.scheduler = scheduler;
         this.nodes = nodes;
         this.maxThreads = maxThreads;
         this.sleep = sleep;
-        setMe();
-    } // end SchedulerProcessor
 
-    //==========================================================================    
-    public String getSchedulerName() {
-        return scheduler.getName();
-    } // end getSchedulerName
+    } // end SchedulerProcessor2
 
     //==========================================================================
-    public void runScheduler() {
-        
+    public void run() {
+
         timerTask = new TimerTask() {
 
             @Override
             public void run() {
 
-                System.out.println("run  " + scheduler.getName());
-                stop = false;
-                ArrayList<NetworkNode> nodes2 = null;
-
                 try {
 
-                    checkNotificators();
+                    System.out.println("threads running " + Counter.getCounter() + " scheduler " + scheduler.getName());
 
-                    //create a copy of nodes to avoid synchronization
-                    nodes2 = new ArrayList<>(nodes);
+                    checkNodes();
 
-                    for (NetworkNode networkNode : nodes2) {
+                    copyNodes();
 
-                        if (stop) {
-                            return;
-                        }
-
-                        if (Counter.getCounter() >= maxThreads) {
-                            //take a break to release some threads                            
-                            Thread.sleep(sleep);
-                        }
-
-                        new Thread(new PingProcedure(networkNode,me)).start();
-
-                    } // end for
+                    launchThreads();
 
                 } catch (Exception e) {
                     logger.error("run", e);
                 }
+
             }
 
         };
 
         timer = new Timer();
-        timer.scheduleAtFixedRate(timerTask, 1500, scheduler.getPeriod() * 1000);
+        timer.scheduleAtFixedRate(timerTask, delay, scheduler.getPeriod() * 1000);
 
-    } // end runScheduler
-
-    //==========================================================================
-    public void realodNodes(ArrayList<NetworkNode> nodes) {
-
-        if (nodes == null || nodes.size() < 1) {
-            throw new IllegalArgumentException("nodes is null or empty");
-        }
-
-        this.nodes = nodes;
-
-    } // end realodNodes
+    } // end run
 
     //==========================================================================
-    public void stopScheduler() {
-        stop = true;
-        timer.cancel();
-        timerTask.cancel();
-        timer = null;
-        timerTask = null;
-    } // end stopScheduler  
-
+    /*public void stopScheduler() {
+     timer.cancel();
+     timerTask.cancel();
+     timer = null;
+     timerTask = null;
+     } // end stopScheduler  */
     //==========================================================================
-    private void checkNotificators() throws Exception {
-
+    private void checkNodes() throws Exception {
         if (nodes == null || nodes.size() < 1) {
             JSONObject jsono = new JSONObject();
             jsono.accumulate("request", "noNodesToCheck");
@@ -116,15 +83,68 @@ public final class SchedulerProcessor {
             jsono.accumulate("scheduler", scheduler.getName());
             new Notificator().sendMultipleNotification(jsono);
         }
+    } // end checkNodes
 
-    } // end checkNotificators   
+    //==========================================================================
+    private void copyNodes() {
+        nodesCopy = new ArrayList<>(nodes);
+    } // end copyNodes
 
-    private void setMe(){
-        me = this;
+    //==========================================================================
+    private void launchThreads() throws InterruptedException {
+
+        for (NetworkNode networkNode : nodesCopy) {
+            
+            if (Counter.getCounter() >= maxThreads) {
+                //take a break to release some threads     
+                System.out.println("max  " + scheduler.getName());
+                Thread.sleep(sleep);
+            }
+
+            Counter.increaseCounter();
+            new Thread(new PingProcedure(networkNode, this)).start();
+
+        } // end for
+
+    } // end launchThreads
+
+    //==========================================================================
+    public void addNetworkNode(NetworkNode networkNode) {
+
+        if (networkNode == null) {
+            throw new NullPointerException("networkNode is null");
+        }
+
+        synchronized (nodes) {
+            nodes.add(networkNode);
+        }
+
     }
 
+    //==========================================================================
+    public void removeNetworkNode(NetworkNode networkNode) {
+
+        if (networkNode == null) {
+            throw new NullPointerException("networkNode is null");
+        }
+
+        nodes.remove(networkNode);
+    }
+
+    //==========================================================================
+    public String getSchedulerName() {
+        return scheduler.getName();
+    }
+
+    //==========================================================================
     public Scheduler getScheduler() {
         return scheduler;
+    }
+
+    public void setScheduler(Scheduler scheduler) {
+        synchronized (scheduler) {
+            this.scheduler = scheduler;
+        }
     }
 
     public ArrayList<NetworkNode> getNodes() {
@@ -133,6 +153,22 @@ public final class SchedulerProcessor {
 
     public void setNodes(ArrayList<NetworkNode> nodes) {
         this.nodes = nodes;
+    }
+
+    public int getMaxThreads() {
+        return maxThreads;
+    }
+
+    public void setMaxThreads(int maxThreads) {
+        this.maxThreads = maxThreads;
+    }
+
+    public int getSleep() {
+        return sleep;
+    }
+
+    public void setSleep(int sleep) {
+        this.sleep = sleep;
     }
 
 } // end class

@@ -8,14 +8,15 @@ import org.json.JSONObject;
 
 /**
  * the class that extends of this class has a lot of business logic.
+ *
  * @author skuarch
  */
 abstract class Process {
 
     Logger logger = null;
     ModelSocket ms = null;
-    JSONObject jsono = null;    
-    
+    JSONObject jsono = null;
+
     //==========================================================================
     Process(ModelSocket ms, JSONObject jsono, Class klass) {
 
@@ -29,14 +30,29 @@ abstract class Process {
 
         this.ms = ms;
         this.jsono = jsono;
-        
+
         logger = Logger.getLogger(klass);
-        
+
     } // end Process
     
-    
     //==========================================================================
-    //public abstract String getStringDispatched();
+    public abstract void run() throws IOException,NullPointerException;
+
+    //==========================================================================
+    /**
+     * send text to the client.
+     *
+     * @param text
+     * @throws IOException
+     */
+    public void sendResponse(String text) throws IOException {
+
+        if (text == null || text.length() < 1) {
+            throw new NullPointerException("text is null or empty");
+        }
+
+        ms.send(text);
+    } // end sendResponse
 
     //==========================================================================
     final void sendError(String error) {

@@ -12,11 +12,12 @@ public class ProcessSimplePing extends Process {
 
     //==========================================================================
     public ProcessSimplePing(ModelSocket ms, JSONObject jsono) {
-        super(ms, jsono,ProcessSimplePing.class);
+        super(ms, jsono, ProcessSimplePing.class);
     } // end ProcessSimplePing
 
     //==========================================================================
-    public void runSimplePing() {
+    @Override
+    public void run() {
 
         String host = null;
         boolean isAlive = false;
@@ -25,8 +26,7 @@ public class ProcessSimplePing extends Process {
 
             host = jsono.getString("host");
             isAlive = new ExecutePing().run(host);
-
-            ms.send("\"isAlive\":\"" + isAlive + "\"");
+            sendResponse("\"isAlive\":\"" + isAlive + "\"");
 
         } catch (Exception e) {
             sendError(e.getMessage());
