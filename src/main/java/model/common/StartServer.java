@@ -32,16 +32,16 @@ public final class StartServer {
 
         ServerSocket serverSocket = null;
         Socket socket = null; //client
-        int timeout = 0;
+        short timeout = 0;
         CustomProperties customProperties = new CustomProperties();
-        int port;
+        short port;
 
         try {
 
             //retrieving data from application.properties               
-            port = customProperties.getIntPropertie("listen.port");
+            port = customProperties.getShortPropertie("listen.port");
 
-            timeout = customProperties.getIntPropertie("socket.timeout");
+            timeout = customProperties.getShortPropertie("socket.timeout");
             serverSocket = new ServerSocket(port);
             logger.info("listening on port " + port);
 

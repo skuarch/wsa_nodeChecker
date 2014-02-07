@@ -20,11 +20,11 @@ import org.json.JSONObject;
 public class ProcessNetworkNodeCreate extends Process {
 
     private String host = null;
-    private int timeout = 0;
+    private short timeout = 0;
     private String schedulerName = null;
-    private int triggerAlarm = 0;
+    private short triggerAlarm = 0;
     private Scheduler scheduler = null;
-    private NetworkNode networkNode = null;    
+    private NetworkNode networkNode = null;
     private SchedulerProcessor schedulerProcessor = null;
 
     //==========================================================================
@@ -42,20 +42,20 @@ public class ProcessNetworkNodeCreate extends Process {
             }
 
             initVariables();
-            
-            if(!validateIfExistsScheduler()){
+
+            if (!validateIfExistsScheduler()) {
                 sendResponse("{\"created\":\"false\",\"error\":\"invalid scheduler\"}");
                 return;
             }
 
-            if (!validateMaxNodesScheduler()) {
-                sendResponse("{\"created\":\"false\",\"error\":\"max nodes\"}");
+            if (!validateMaxNodes()) {
+                sendResponse("{\"error\":\"max number of nodes found\"}");
                 return;
             }
 
             saveNetworkNode();
 
-            addNodeSchedulerProcessor();            
+            addNodeSchedulerProcessor();
 
             sendResponse("{\"created\":\"true\"}");
 
@@ -84,32 +84,31 @@ public class ProcessNetworkNodeCreate extends Process {
     //==========================================================================
     private void initVariables() {
         host = jsono.getString("networkNodeHost");
-        timeout = jsono.getInt("networkNodeTimeout");
-        triggerAlarm = jsono.getInt("triggerAlarm");
+        timeout = (short) jsono.getInt("networkNodeTimeout");
+        triggerAlarm = (short) jsono.getInt("triggerAlarm");
         schedulerName = (String) jsono.get("schedulerName");
         scheduler = ModelScheduler.getSchedulerByName(schedulerName);
         networkNode = new NetworkNode(host, timeout, scheduler, triggerAlarm);
         schedulerProcessor = SchedulerContainer.getSchedulerProcessor(schedulerName);
     } // end initVariables 
-    
+
     //==========================================================================
-    public boolean validateIfExistsScheduler(){        
+    public boolean validateIfExistsScheduler() {
         return scheduler != null;
-    } // end validateIfExistsScheduler
+    } // end validateIfExistsScheduler    
 
     //==========================================================================
-    private boolean validateMaxNodesScheduler() throws IOException {
+    private boolean validateMaxNodes() {
 
-        ArrayList<NetworkNode> n = schedulerProcessor.getNodes();
-
-        if (n.size() >= 254) {
-            ms.send("{\"error\":\"only 254 nodes are allowed per scheduler\"}");
+        ArrayList<NetworkNode> nodes = ModelNetworkNode.getNetworkNodesNoValidation(scheduler);
+        
+        if (nodes.size() > 253) {
             return false;
         }
 
         return true;
-        
-    } // end validateMaxNodesScheduler
+
+    } // end validateMaxNodes
 
     //==========================================================================
     private void saveNetworkNode() {
@@ -120,6 +119,5 @@ public class ProcessNetworkNodeCreate extends Process {
     private void addNodeSchedulerProcessor() {
         schedulerProcessor.addNetworkNode(networkNode);
     } // end reloadContextNetworkNode
-    
 
 } // end class

@@ -1,6 +1,5 @@
 package model.common;
 
-import java.util.ArrayList;
 import model.beans.NetworkNode;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -12,6 +11,7 @@ import org.json.JSONObject;
 public final class DeepPing {
 
     private static final Logger logger = Logger.getLogger(DeepPing.class);
+    
     private NetworkNode networkNode = null;
     private SchedulerProcessor schedulerProcessor = null;
 
@@ -29,24 +29,27 @@ public final class DeepPing {
 
         try {
 
+            CounterDeepPing.increaseCounter();
             removeNodeFromContext();
 
             while (endTime >= System.currentTimeMillis()) {
 
                 if (isAlive) {
-                                       
+
                     //add node to the context
                     addNodeContext();
+                    CounterDeepPing.decreaseCounter();
+                    Counter.decreaseCounter();
                     return;
 
                 }
-                
+
                 isAlive = new ExecutePing().run(networkNode.getHost());
 
             }
 
-            sendNotification();            
-            new ContinuePing(networkNode,schedulerProcessor).run();
+            sendNotification();
+            new ContinuePing(networkNode, schedulerProcessor).run();
 
         } catch (Exception e) {
             logger.error("run", e);
@@ -72,19 +75,15 @@ public final class DeepPing {
     //==========================================================================
     private void removeNodeFromContext() {
 
-        ArrayList<NetworkNode> nodes = schedulerProcessor.getNodes();
-        nodes.remove(networkNode);
-        schedulerProcessor.setNodes(nodes);
+        schedulerProcessor.removeNetworkNode(networkNode);
 
-    }
-
+    } // end removeNodeFromContext
+    
     //==========================================================================
     private void addNodeContext() {
 
-        ArrayList<NetworkNode> nodes = schedulerProcessor.getNodes();
-        nodes.add(networkNode);
-        schedulerProcessor.setNodes(nodes);
-        
-    }
+        schedulerProcessor.addNetworkNode(networkNode);
+
+    } // end addNodeContext
 
 } // end class

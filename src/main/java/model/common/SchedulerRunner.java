@@ -20,21 +20,20 @@ public final class SchedulerRunner {
     public void runStoredSchedulers() throws IOException {
 
         ArrayList<Scheduler> schedulers = ModelScheduler.getSchedulers();
-        int sleep = 2500;
-        int maxThreads = 500;
+        short sleep = 2500;
+        short maxThreads = 500;
 
         try {
 
             for (Scheduler scheduler : schedulers) {
 
                 //create the context of network nodes
-                ArrayList<NetworkNode> nodes = ModelNetworkNode.getNetworkNodes(scheduler);
+                ArrayList<NetworkNode> nodes = getNodes(scheduler);
 
                 //run the process            
-                maxThreads = new CustomProperties().getIntPropertie("thread.max.ping");
-                sleep = new CustomProperties().getIntPropertie("sleep.time.1");
-                SchedulerProcessor schedulerProcessor = new SchedulerProcessor(scheduler, nodes, maxThreads, sleep);
-                schedulerProcessor.setNodes(nodes);
+                maxThreads = new CustomProperties().getShortPropertie("thread.max.ping");
+                sleep = new CustomProperties().getShortPropertie("sleep.time.1");
+                SchedulerProcessor schedulerProcessor = new SchedulerProcessor(scheduler, nodes, maxThreads, sleep);                
                 SchedulerContainer.addSchedulerProcessor(schedulerProcessor);
                 schedulerProcessor.run();
 
@@ -46,4 +45,29 @@ public final class SchedulerRunner {
 
     } // end runStoredShcedulers
 
+    //==========================================================================
+    public void runSchedulerDeepPing() {
+
+        new SchedulerDeepPing().run();
+
+    } // end runSchedulerDeepPing
+
+    //==========================================================================
+    private ArrayList<NetworkNode> getNodes(Scheduler scheduler) {
+
+        ArrayList<NetworkNode> nodes = new ArrayList<>();
+
+        try {
+
+            nodes = ModelNetworkNode.getNetworkNodes(scheduler);
+
+        } catch (NullPointerException npe) {
+            System.out.println("trying to run scheduler without nodes");
+        }
+
+        return nodes;
+
+    } // end getNodes
+
 } // end class
+

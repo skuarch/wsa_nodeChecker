@@ -14,9 +14,9 @@
         <property name="connection.password"></property>         
         <property name="hibernate.hbm2ddl.auto">update</property>-->
         
-        <property name="connection.url">
+        <!--<property name="connection.url">
             jdbc:mysql://localhost/wsa?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true
-        </property>
+        </property>-->
         <property name="hibernate.connection.characterEncoding">UTF-8</property>
         <property name="hibernate.connection.useUnicode">true</property>
         <property name="c3p0.min_size">1</property>
@@ -25,8 +25,8 @@
         <property name="c3p0.idle_test_period">5000</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.username">root</property>
-        <property name="connection.password">vitalnoc</property>
+        <!--<property name="connection.username">root</property>
+        <property name="connection.password">vitalnoc</property>-->
         <property name="hibernate.show_sql">false</property>
         <property name="hibernate.use_sql_comments">false</property>
         <property name="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>

@@ -1,6 +1,5 @@
 package model.common;
 
-import java.util.ArrayList;
 import model.beans.NetworkNode;
 import org.apache.log4j.Logger;
 
@@ -8,7 +7,7 @@ import org.apache.log4j.Logger;
  *
  * @author skuarch
  */
-public final class PingProcedure extends Thread{
+public final class PingProcedure extends Thread {
 
     private static final Logger logger = Logger.getLogger(PingProcedure.class);
     private NetworkNode networkNode = null;
@@ -27,32 +26,22 @@ public final class PingProcedure extends Thread{
         boolean isAlive = false;
 
         try {
-
             
+            Counter.increaseCounter();
             isAlive = new ExecutePing().run(networkNode.getHost());
 
             if (!isAlive) {
-                
-                removeNodeFromSchedulerProcessor();
-                new DeepPing(networkNode,schedulerProcessor).run();                
 
-            } 
+                new DeepPing(networkNode, schedulerProcessor).run();
+
+            } else {
+                Counter.decreaseCounter();
+            }
 
         } catch (Exception e) {
             logger.error("run", e);
-        } finally {
-            Counter.decreaseCounter();
         }
 
-    } // end run
+    } // end run   
 
-    //==========================================================================
-    private void removeNodeFromSchedulerProcessor() {
-
-        ArrayList<NetworkNode> nodes = schedulerProcessor.getNodes();
-        nodes.remove(networkNode);
-        schedulerProcessor.setNodes(nodes);
-
-    } // end removeNodeFromSchedulerProcessor
-    
 } // end class

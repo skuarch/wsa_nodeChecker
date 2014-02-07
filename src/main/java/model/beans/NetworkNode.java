@@ -41,9 +41,9 @@ public class NetworkNode implements Serializable {
     @Column(name = "network_node_host")
     private String host;
     @Column(name = "network_node_timeout")
-    private int timeout;    
+    private short timeout;    
     @Column(name = "network_node_trigger_alarm")
-    private int triggerAlarm;    
+    private short triggerAlarm;    
     @ManyToOne
     @JoinColumn(name = "scheduler_id")
     private Scheduler scheduler;
@@ -53,7 +53,7 @@ public class NetworkNode implements Serializable {
     } // NetworkNode
 
     //==========================================================================
-    public NetworkNode(String host, int timeout, Scheduler scheduler,int triggerAlarm) {
+    public NetworkNode(String host, short timeout, Scheduler scheduler,short triggerAlarm) {
         this.host = host;
         this.timeout = timeout;
         this.scheduler = scheduler;
@@ -76,19 +76,19 @@ public class NetworkNode implements Serializable {
         this.host = host;
     }
 
-    public int getTimeout() {
+    public short getTimeout() {
         return timeout;
     }
 
-    public void setTimeout(int timeout) {
+    public void setTimeout(short timeout) {
         this.timeout = timeout;
     }
 
-    public int getTriggerAlarm() {
+    public short getTriggerAlarm() {
         return triggerAlarm;
     }
 
-    public void setTriggerAlarm(int triggerAlarm) {
+    public void setTriggerAlarm(short triggerAlarm) {
         this.triggerAlarm = triggerAlarm;
     }
 

@@ -152,6 +152,27 @@ public class PropertyUtilities {
         return value;
 
     } // end getIntPropertie
+    
+    public short getShortPropertie(String key) throws FileNotFoundException, IOException {
+
+        if (fileProperties == null || fileProperties.length() < 1) {
+            throw new NullPointerException("fileProperties is null or empty");
+        }
+
+        if (key == null || key.length() < 1) {
+            throw new NullPointerException("key is null or empty");
+        }
+
+        short value;
+
+        value = Short.parseShort(getStringPropertie(key));        
+
+        return value;
+
+    } // end getIntPropertie
+    
+    
+    
 
     //==========================================================================
     /**

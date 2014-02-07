@@ -1,6 +1,5 @@
 package model.common;
 
-import java.util.ArrayList;
 import model.beans.NetworkNode;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -31,9 +30,11 @@ public class ContinuePing {
             while (true) {
 
                 if (isAlive) {
-                    
+
                     addNodeContext();
                     sendNotification();
+                    CounterDeepPing.decreaseCounter();
+                    Counter.decreaseCounter();
                     return;
 
                 }
@@ -47,14 +48,10 @@ public class ContinuePing {
         }
 
     } // end run
-   
 
     //==========================================================================
     private void addNodeContext() {
-
-        ArrayList<NetworkNode> nodes = schedulerProcessor.getNodes();
-        nodes.add(networkNode);
-        schedulerProcessor.setNodes(nodes);
+        schedulerProcessor.addNetworkNode(networkNode);
     }
 
     //==========================================================================
@@ -71,6 +68,6 @@ public class ContinuePing {
         new Notificator().sendMultipleNotification(jsonNotification);
 
     } // end sendNotification
-    
+
 } // end class
 

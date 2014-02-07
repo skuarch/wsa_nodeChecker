@@ -20,10 +20,10 @@ import org.json.JSONObject;
 public class ProcessSchedulerCreate extends Process {
 
     private String name = null;
-    private int period;
+    private short period;
     private boolean status = false;
-    private int sleep = 2500;
-    private int maxThreads = 500;
+    private short sleep = 2500;
+    private short maxThreads = 500;
     private Scheduler scheduler = null;
     private SchedulerProcessor schedulerProcessor = null;
     private ArrayList<NetworkNode> nodes = null;
@@ -99,10 +99,10 @@ public class ProcessSchedulerCreate extends Process {
     private void initVariables() throws IOException {
 
         name = jsono.getString("schedulerName");
-        period = jsono.getInt("schedulerPeriod");
+        period = (short) jsono.getInt("schedulerPeriod");
         status = jsono.getBoolean("schedulerStatus");
-        maxThreads = new CustomProperties().getIntPropertie("thread.max.ping");
-        sleep = new CustomProperties().getIntPropertie("sleep.time.1");
+        maxThreads = new CustomProperties().getShortPropertie("thread.max.ping");
+        sleep = new CustomProperties().getShortPropertie("sleep.time.1");
         nodes = new ArrayList<>();
         scheduler = new Scheduler(name, period, status);
         schedulerProcessor = new SchedulerProcessor(scheduler, nodes, maxThreads, sleep);

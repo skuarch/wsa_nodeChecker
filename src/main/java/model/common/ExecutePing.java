@@ -8,7 +8,7 @@ import java.io.IOException;
  */
 public final class ExecutePing {
 
-    private static final String FILE = "/home/skuarch/NetBeansProjects/wsa_nodeChecker/ping.sh ";
+    private static final String FILE = PingFile.PATH;
 
     //==========================================================================
     public ExecutePing() {

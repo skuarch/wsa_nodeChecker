@@ -36,7 +36,10 @@ public class SchedulerContainerTest extends TestCase {
         Scheduler s = new Scheduler();
         s.setName("one");
         
-        SchedulerContainer.addSchedulerProcessor(new SchedulerProcessor(s, new ArrayList<NetworkNode>(),500,500));
+        short time = 500;
+        short max = 500;
+        
+        SchedulerContainer.addSchedulerProcessor(new SchedulerProcessor(s, new ArrayList<NetworkNode>(), time,max));
     }
 
     /**
@@ -50,7 +53,10 @@ public class SchedulerContainerTest extends TestCase {
         Scheduler s = new Scheduler();
         s.setName("two");
         
-        SchedulerContainer.addSchedulerProcessor(new SchedulerProcessor(s, new ArrayList<NetworkNode>(),500,500));
+        short time = 500;
+        short max = 500;
+        
+        SchedulerContainer.addSchedulerProcessor(new SchedulerProcessor(s, new ArrayList<NetworkNode>(),time,max));
         
         System.out.println(SchedulerContainer.getSchedulerProcessor("two"));
         

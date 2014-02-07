@@ -81,4 +81,20 @@ public class ModelNetworkNode {
 
     } // end getNetworkNodes
 
+    public static ArrayList<NetworkNode> getNetworkNodesNoValidation(Scheduler scheduler) {
+
+        if (scheduler == null || scheduler.getName().length() < 1) {
+            throw new IllegalArgumentException("scheduler is incorrect");
+        }
+
+        ArrayList<NetworkNode> nodes = null;
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("schedulerId", scheduler.getId() + "");
+        List<NetworkNode> list = new DAO().query("getNetworkNodeBySchedulerId", parameters, new NetworkNode());
+        nodes = new ArrayList<>(list);
+
+        return nodes;
+
+    } // end getNetworkNodes
+
 } // end clas

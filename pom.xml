@@ -157,8 +157,9 @@
                         <phase>compile</phase>
                         <configuration>
                             <target>
+                                <!--<copy file="configuration/hibernate.properties" tofile="target/configuration/hibernate.properties"/>-->
                                 <copy file="configuration/configuration.properties" tofile="target/configuration/configuration.properties"/>
-                                <copy file="configuration/log4j.properties" tofile="target/configuration/log4j.properties"/>
+                                <copy file="configuration/log4j.properties" tofile="target/configuration/log4j.properties"/>                                
                                 <copy file="ping.sh" tofile="target/ping.sh"/>
                             </target>
                         </configuration>
@@ -342,7 +343,5 @@
         <!-- / common libraries -->     
     
     </dependencies>
-    
-    
     
 </project>

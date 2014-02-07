@@ -1,6 +1,8 @@
 package application.wsa;
 
 import java.io.IOException;
+import model.common.CustomProperties;
+import model.common.PingFile;
 import model.common.SchedulerRunner;
 import model.common.ShutdownHook;
 import model.common.StartServer;
@@ -37,11 +39,13 @@ public final class Main {
 
         try {
 
+            PingFile.PATH = new CustomProperties().getStringPropertie("ping.file");
             Runtime.getRuntime().addShutdownHook(new ShutdownHook());
             logger.info("**** starting program ****");
 
             //run schedulers
             new SchedulerRunner().runStoredSchedulers();
+            new SchedulerRunner().runSchedulerDeepPing();
             
             //create the serverSocket
             new StartServer().run();

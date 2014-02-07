@@ -34,7 +34,7 @@ public class Scheduler implements Serializable {
     @Column(name = "scheduler_name", nullable = false)
     private String name;
     @Column(name = "scheduler_period")
-    private int period;
+    private short period;
     @Column(name = "scheduler_status")
     private boolean status;
     @OneToMany(mappedBy = "scheduler", cascade = CascadeType.ALL)
@@ -45,7 +45,7 @@ public class Scheduler implements Serializable {
     }
 
     //==========================================================================
-    public Scheduler(String name, int period, boolean status) {
+    public Scheduler(String name, short period, boolean status) {
         this.name = name;
         this.period = period;
         this.status = status;        
@@ -67,11 +67,11 @@ public class Scheduler implements Serializable {
         this.name = name;
     }
 
-    public int getPeriod() {
+    public short getPeriod() {
         return period;
     }
 
-    public void setPeriod(int period) {
+    public void setPeriod(short period) {
         this.period = period;
     }
 

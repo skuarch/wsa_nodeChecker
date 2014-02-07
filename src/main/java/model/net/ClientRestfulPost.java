@@ -13,10 +13,10 @@ import org.jboss.resteasy.client.*;
  *
  * @author skuarch
  */
-@SuppressWarnings( "deprecation" )
+@SuppressWarnings("deprecation")
 public final class ClientRestfulPost implements ClientRestful {
-    
-    private ClientRequest clientRequest = null;    
+
+    private ClientRequest clientRequest = null;
     private ClientResponse<String> clientResponse = null;
     private int status = 0;
     private boolean posted = false;
@@ -28,7 +28,7 @@ public final class ClientRestfulPost implements ClientRestful {
      *
      * @param url String
      */
-    @SuppressWarnings( "deprecation" )
+    @SuppressWarnings("deprecation")
     public ClientRestfulPost(String url) {
 
         clientRequest = new ClientRequest(url);
@@ -44,7 +44,7 @@ public final class ClientRestfulPost implements ClientRestful {
      * @throws Exception
      */
     @Override
-    public void send(String text) throws Exception {
+    public void send(String text) {
 
         if (text == null || text.length() < 0) {
             text = "";
@@ -60,19 +60,19 @@ public final class ClientRestfulPost implements ClientRestful {
      * receive data from server.
      *
      * @return String
-     * @throws Exception
+     * @throws java.io.IOException     
      */
     @Override
-    public String receive() throws Exception {        
-        
-        if(!sended){
-            throw new Exception("please call the method send before you receive");
+    public String receive() throws IOException {
+
+        if (!sended) {
+            throw new RuntimeException("please call the method send before you receive");
         }
-        
-        if(!posted){
-            throw new Exception("please call the method post after you send");
+
+        if (!posted) {
+            throw new RuntimeException("please call the method post after you send");
         }
-        
+
         StringBuilder sb = new StringBuilder();
         String inputString = null;
         BufferedReader br = null;
@@ -84,18 +84,18 @@ public final class ClientRestfulPost implements ClientRestful {
             status = clientResponse.getStatus();
 
             if (status != 200) {
-                throw new Exception("bad response from server " + status);
+                throw new RuntimeException("bad response from server " + status);
             }
 
             bais = new ByteArrayInputStream(clientResponse.getEntity().getBytes("UTF-8"));
-            isr = new InputStreamReader(bais,"UTF-8");
+            isr = new InputStreamReader(bais, "UTF-8");
             br = new BufferedReader(isr);
 
             while ((inputString = br.readLine()) != null) {
                 sb.append(inputString);
             }
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw e;
         } finally {
             closeBufferedReader(br);
@@ -111,11 +111,11 @@ public final class ClientRestfulPost implements ClientRestful {
     public void post() throws Exception {
 
         if (posted) {
-            throw new Exception("you already post");
+            throw new RuntimeException("you already post");
         }
 
         if (clientRequest == null) {
-            throw new Exception("clientRequest is null");
+            throw new RuntimeException("clientRequest is null");
         }
 
         posted = true;
