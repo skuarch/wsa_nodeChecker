@@ -15,9 +15,10 @@ public final class ExecutePing {
     } // end ExecutePing
 
     //==========================================================================
-    public boolean run(String host) throws IOException, InterruptedException, Exception {
+    public String run(String host) throws IOException, InterruptedException, Exception {
 
-        return Boolean.parseBoolean(ExecuteCommand.exec(FILE + host));
+        //return Boolean.parseBoolean(ExecuteCommand.exec(FILE + host));
+        return ExecuteCommand.exec(FILE + host);
 
     } // end run
 

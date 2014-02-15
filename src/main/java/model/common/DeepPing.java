@@ -11,7 +11,7 @@ import org.json.JSONObject;
 public final class DeepPing {
 
     private static final Logger logger = Logger.getLogger(DeepPing.class);
-    
+
     private NetworkNode networkNode = null;
     private SchedulerProcessor schedulerProcessor = null;
 
@@ -24,17 +24,19 @@ public final class DeepPing {
     //==========================================================================   
     public void run() {
 
-        boolean isAlive = false;
+        String isAlive = "false";
         long endTime = System.currentTimeMillis() + (networkNode.getTriggerAlarm() * 1000);
 
         try {
 
             CounterDeepPing.increaseCounter();
-            removeNodeFromContext();
+            //removeNodeFromContext();
 
             while (endTime >= System.currentTimeMillis()) {
 
-                if (isAlive) {
+                isAlive = new ExecutePing().run(networkNode.getHost());
+                
+                if ("true".equals(isAlive)) {
 
                     //add node to the context
                     addNodeContext();
@@ -44,12 +46,12 @@ public final class DeepPing {
 
                 }
 
-                isAlive = new ExecutePing().run(networkNode.getHost());
-
             }
 
             sendNotification();
-            new ContinuePing(networkNode, schedulerProcessor).run();
+            addNodeContext();
+            CounterDeepPing.decreaseCounter();
+            Counter.decreaseCounter();            
 
         } catch (Exception e) {
             logger.error("run", e);
@@ -71,13 +73,6 @@ public final class DeepPing {
         new Notificator().sendMultipleNotification(jsonNotification);
 
     } // end sendNotification
-
-    //==========================================================================
-    private void removeNodeFromContext() {
-
-        schedulerProcessor.removeNetworkNode(networkNode);
-
-    } // end removeNodeFromContext
     
     //==========================================================================
     private void addNodeContext() {

@@ -20,7 +20,7 @@ public class ProcessSimplePing extends Process {
     public void run() {
 
         String host = null;
-        boolean isAlive = false;
+        String isAlive = "false";
 
         try {
 

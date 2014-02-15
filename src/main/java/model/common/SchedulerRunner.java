@@ -46,7 +46,7 @@ public final class SchedulerRunner {
     } // end runStoredShcedulers
 
     //==========================================================================
-    public void runSchedulerDeepPing() {
+    public void runSchedulerDeepPing() throws IOException {
 
         new SchedulerDeepPing().run();
 

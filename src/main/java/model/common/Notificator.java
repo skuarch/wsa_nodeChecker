@@ -3,6 +3,7 @@ package model.common;
 import java.util.ArrayList;
 import model.beans.Notifier;
 import model.net.ClientRestfulPost;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 /**
@@ -11,7 +12,8 @@ import org.json.JSONObject;
  */
 public final class Notificator {
 
-    private static ArrayList<Notifier> notifiers = ModelNotifier.getNotifiers();    
+    private static final Logger logger = Logger.getLogger(Notificator.class);
+    private static ArrayList<Notifier> notifiers = ModelNotifier.getNotifiers();
 
     //==========================================================================
     public Notificator() {
@@ -19,29 +21,37 @@ public final class Notificator {
     } // end Notificator
 
     //==========================================================================
-    public void sendMultipleNotification(JSONObject json) throws Exception {
+    public void sendMultipleNotification(final JSONObject json) throws Exception {
 
-        String proxyUrl = null;
+        new Thread(new Runnable() {
 
-        try {
+            @Override
+            public void run() {
 
-            proxyUrl = new CustomProperties().getStringPropertie("proxy.url");
-            
-            for (Notifier notifier : notifiers) {
+                String proxyUrl = null;
 
-                json.accumulate("url", notifier.getUrl());
+                try {
 
-                ClientRestfulPost crp = new ClientRestfulPost(proxyUrl);
-                crp.send(json.toString());
-                crp.post();
-                //System.out.println(crp.receive());
-                crp.closeClient();
+                    proxyUrl = new CustomProperties().getStringPropertie("proxy.url");
+
+                    for (Notifier notifier : notifiers) {
+
+                        json.accumulate("url", notifier.getUrl());
+
+                        ClientRestfulPost crp = new ClientRestfulPost(proxyUrl);
+                        crp.send(json.toString());
+                        crp.post();
+                        //System.out.println(crp.receive());
+                        crp.closeClient();
+
+                    }
+
+                } catch (Exception e) {
+                    logger.error("sendMultipleNotification", e);
+                }
 
             }
-
-        } catch (Exception e) {
-            throw e;
-        }
+        }).start();
 
     } // end sendMultipleNotification
 

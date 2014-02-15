@@ -3,6 +3,8 @@ package model.common;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import model.beans.NetworkNode;
 import model.beans.Scheduler;
 import org.apache.log4j.Logger;
@@ -18,24 +20,27 @@ public class SchedulerProcessor {
     private Scheduler scheduler = null;
     private ArrayList<NetworkNode> nodes = null;
     private ArrayList<NetworkNode> nodesCopy = null;
+    private ExecutorService executorService = null;
     private TimerTask timerTask = null;
     private Timer timer = null;
     private short maxThreads = 500;
     private short sleep = 2500;
-    private short delay = 1500;    
+    private short delay = 1500;
 
     //==========================================================================
-    public SchedulerProcessor(Scheduler scheduler, ArrayList<NetworkNode> nodes, short maxThreads, short sleep) {
+    public SchedulerProcessor(final Scheduler scheduler, final ArrayList<NetworkNode> nodes, final short maxThreads, final short sleep) {
 
         this.scheduler = scheduler;
         this.nodes = nodes;
         this.maxThreads = maxThreads;
         this.sleep = sleep;
+        executorService = Executors.newFixedThreadPool(maxThreads);
+        //executorService = Executors.newCachedThreadPool();
 
     } // end SchedulerProcessor2
 
     //==========================================================================
-    public void run() {
+    public void run() {        
 
         timerTask = new TimerTask() {
 
@@ -44,19 +49,16 @@ public class SchedulerProcessor {
 
                 try {
 
-                    //System.out.println("threads running " + Counter.getCounter() + " scheduler " + scheduler.getName());
-
-                    if (!validateNodes()) {
-                        sendNotification();
-                        return;
-                    }
+                    System.out.println("threads running " + Counter.getCounter() + " scheduler " + scheduler.getName());
 
                     copyNodes();
 
                     launchThreads();
 
-                } catch (Exception e) {
+                } catch (InterruptedException e) {
                     logger.error("run", e);
+                } finally {
+                    System.out.println("termine");
                 }
 
             }
@@ -90,7 +92,12 @@ public class SchedulerProcessor {
 
     //==========================================================================
     private boolean validateNodes() {
-        return this.nodes != null && this.nodes.size() >= 1;
+
+        if (this.nodes == null || this.nodes.size() < 1) {
+            return false;
+        }
+        return true;
+
     }
 
     //==========================================================================
@@ -107,36 +114,46 @@ public class SchedulerProcessor {
     //==========================================================================
     private void launchThreads() throws InterruptedException {
 
-        for (NetworkNode networkNode : nodesCopy) {
+        try {
 
-            if (Counter.getCounter() >= maxThreads) {
-                //take a break to release some threads                     
-                Thread.sleep(sleep);
-            } else {
-                new Thread(new PingProcedure(networkNode, this)).start();
-            }
+            for (int i = 0; i < nodesCopy.size(); i++) {
 
-        } // end for
+                if (Counter.getCounter() >= maxThreads) {
+                    //take a break to release some threads                     
+                    Thread.sleep(sleep);
+
+                    if (i <= 0) {
+                        i = 0;
+                    } else {
+                        i--;
+                    }
+
+                } else {
+                    executorService.execute(new PingProcedure(nodesCopy.get(i), this));
+                }
+
+            } // end for
+
+            //executorService.
+        } catch (InterruptedException e) {
+            throw e;
+        }
 
     } // end launchThreads
 
     //==========================================================================
-    public void addNetworkNode(NetworkNode networkNode) {
+    public synchronized void addNetworkNode(NetworkNode networkNode) {
 
         if (networkNode == null) {
             throw new NullPointerException("networkNode is null");
         }
-        
-        /*if (this.nodes.size() > 254) {
-            throw new IllegalArgumentException("nodes has more than 254 nodes");
-        }*/
 
         this.nodes.add(networkNode);
 
     }
 
     //==========================================================================
-    public void removeNetworkNode(NetworkNode networkNode) {
+    public synchronized void removeNetworkNode(NetworkNode networkNode) {
 
         if (networkNode == null) {
             throw new NullPointerException("networkNode is null");
@@ -155,16 +172,4 @@ public class SchedulerProcessor {
         return scheduler;
     }
 
-    //==========================================================================
-    public void setScheduler(Scheduler scheduler) {
-        synchronized (scheduler) {
-            this.scheduler = scheduler;
-        }
-    }
-
-    //==========================================================================
-    public ArrayList<NetworkNode> getNodes() {
-        return this.nodes;
-    }
-    
 } // end class

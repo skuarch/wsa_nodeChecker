@@ -23,6 +23,7 @@ model/beans/Notifier.class
 model/process/SaveConfiguration.class
 model/common/Counter.class
 model/common/ExecutePing.class
+model/common/Notificator$1.class
 model/net/ClientRestfulPost.class
 model/util/PropertyUtilities.class
 model/process/AddNotifier.class

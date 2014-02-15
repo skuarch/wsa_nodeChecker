@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
  *
  * @author skuarch
  */
-public final class PingProcedure extends Thread {
+public final class PingProcedure extends Thread{
 
     private static final Logger logger = Logger.getLogger(PingProcedure.class);
     private NetworkNode networkNode = null;
@@ -23,25 +23,43 @@ public final class PingProcedure extends Thread {
     @Override
     public void run() {
 
-        boolean isAlive = false;
+        String isAlive = "false";
 
         try {
             
+            removeNodeFromContext();
             Counter.increaseCounter();
             isAlive = new ExecutePing().run(networkNode.getHost());
 
-            if (!isAlive) {
-
-                new DeepPing(networkNode, schedulerProcessor).run();
+            if ("false".equals(isAlive)) {
+                
+                new DeepPing(networkNode, schedulerProcessor).run();                
 
             } else {
+                
+                addNodeContext();                
                 Counter.decreaseCounter();
-            }
+                
+            }            
 
         } catch (Exception e) {
             logger.error("run", e);
         }
 
-    } // end run   
+    } // end run  
+    
+    //==========================================================================
+    private void removeNodeFromContext() {
+
+        schedulerProcessor.removeNetworkNode(networkNode);
+
+    } // end removeNodeFromContext
+
+    //==========================================================================
+    private void addNodeContext() {
+
+        schedulerProcessor.addNetworkNode(networkNode);
+
+    } // end addNodeContext
 
 } // end class

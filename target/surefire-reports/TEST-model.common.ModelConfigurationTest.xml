@@ -59,8 +59,8 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="0" classname="model.common.ModelConfigurationTest" name="testGetJSONConfiguration"/>
-  <testcase time="0.001" classname="model.common.ModelConfigurationTest" name="testGetHashMapConfiguration"/>
   <testcase time="0" classname="model.common.ModelConfigurationTest" name="testSaveConfiguration"/>
   <testcase time="0" classname="model.common.ModelConfigurationTest" name="testGetConfiguration"/>
+  <testcase time="0" classname="model.common.ModelConfigurationTest" name="testGetJSONConfiguration"/>
+  <testcase time="0.001" classname="model.common.ModelConfigurationTest" name="testGetHashMapConfiguration"/>
 </testsuite>

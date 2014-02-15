@@ -39,7 +39,7 @@ public class ContinuePing {
 
                 }
 
-                isAlive = new ExecutePing().run(networkNode.getHost());
+                //isAlive = new ExecutePing().run(networkNode.getHost());
 
             }
 
